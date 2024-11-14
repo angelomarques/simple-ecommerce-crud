@@ -1,19 +1,19 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 
-// const ClientThemeProvider = dynamic(() => import(''), { ssr: false });
+const ClientThemeProvider = dynamic(() => import("./theme"), { ssr: false });
 
 export function Providers({ children }: React.PropsWithChildren) {
   const [client] = useState(new QueryClient());
 
   return (
     <QueryClientProvider client={client}>
-      <NextThemesProvider attribute="class" defaultTheme="dark">
+      <ClientThemeProvider attribute="class" defaultTheme="dark">
         {children}
-      </NextThemesProvider>
+      </ClientThemeProvider>
     </QueryClientProvider>
   );
 }
