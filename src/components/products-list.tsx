@@ -60,8 +60,7 @@ export function ProductsList() {
         )}
       </div>
 
-      {/* TODO: fix animation */}
-      {true && (
+      {isFetchingNextPage && (
         <div className="flex justify-center py-2 mt-3">
           <LoadingSpinner fill="white" />
         </div>
