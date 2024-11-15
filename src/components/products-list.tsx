@@ -11,38 +11,51 @@ import {
 } from "./ui/card";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { formatPrice } from "@/lib/utils";
 
 export function ProductsList() {
   const { data } = useProducts();
 
   return (
-    <div className="grid grid-cols-4">
-      <ProductCard />
+    <div className="grid grid-cols-4 gap-5">
+      {data?.products.map((product) => (
+        <ProductCard
+          key={product.id}
+          title={product.title}
+          description={product.description}
+          image={product.thumbnail}
+          price={product.price}
+        />
+      ))}
     </div>
   );
 }
 
-function ProductCard() {
+interface ProductCardProps {
+  title: string;
+  description: string;
+  image: string;
+  price: number;
+}
+
+function ProductCard({ title, description, image, price }: ProductCardProps) {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Product Title</CardTitle>
-        <CardDescription>Lorem ipsum dolor sit amet</CardDescription>
-      </CardHeader>
-
       <CardContent>
-        <Image
-          src="https://picsum.photos/200"
-          alt="Product"
-          width={200}
-          height={200}
-        />
+        <Image src={image} alt="Product" width={200} height={200} />
       </CardContent>
 
-      <CardFooter className="flex justify-between items-center">
-        <p>$ 23,75</p>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription className="line-clamp-3">
+          {description}
+        </CardDescription>
+      </CardHeader>
 
-        <Button variant="ghost">
+      <CardFooter className="flex justify-between items-center">
+        <p>{formatPrice(price)}</p>
+
+        <Button variant="ghost" title="Add to card">
           <ShoppingCart />
         </Button>
       </CardFooter>

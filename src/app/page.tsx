@@ -5,7 +5,7 @@ export default function Home() {
     <div>
       <Header />
 
-      <main className="max-w-4xl mx-auto py-5">
+      <main className="max-w-6xl mx-auto py-5">
         <ProductsList />
       </main>
     </div>
@@ -15,7 +15,7 @@ export default function Home() {
 export function Header() {
   return (
     <header className="w-full border-b border-b-slate-500">
-      <div className="max-w-4xl mx-auto py-4">
+      <div className="max-w-6xl mx-auto py-4">
         <h1 className="text-3xl font-bold">Simple Store</h1>
       </div>
     </header>
