@@ -12,22 +12,61 @@ import {
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { formatPrice } from "@/lib/utils";
+import { useCallback, useRef } from "react";
+import { LoadingSpinner } from "@/assets/loading-spinner";
 
 export function ProductsList() {
-  const { data } = useProducts();
+  const {
+    data: products,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    isFetching,
+  } = useProducts();
+  const observer = useRef<IntersectionObserver>();
+  const isLoading = isFetchingNextPage || isFetching;
+
+  const lastElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (isLoading) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetching) {
+          fetchNextPage();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [fetchNextPage, hasNextPage, isFetching, isLoading]
+  );
 
   return (
-    <div className="grid grid-cols-4 gap-5">
-      {data?.products.map((product) => (
-        <ProductCard
-          key={product.id}
-          title={product.title}
-          description={product.description}
-          image={product.thumbnail}
-          price={product.price}
-        />
-      ))}
-    </div>
+    <>
+      <div className="grid grid-cols-4 gap-5">
+        {products?.pages.map((item) =>
+          item.products.map((product) => (
+            <ProductCard
+              key={product.id}
+              title={product.title}
+              description={product.description}
+              image={product.thumbnail}
+              price={product.price}
+              ref={lastElementRef}
+            />
+          ))
+        )}
+      </div>
+
+      {/* TODO: fix animation */}
+      {true && (
+        <div className="flex justify-center py-2 mt-3">
+          <LoadingSpinner fill="white" />
+        </div>
+      )}
+    </>
   );
 }
 
@@ -36,11 +75,18 @@ interface ProductCardProps {
   description: string;
   image: string;
   price: number;
+  ref: (node: HTMLDivElement) => void;
 }
 
-function ProductCard({ title, description, image, price }: ProductCardProps) {
+function ProductCard({
+  title,
+  description,
+  image,
+  price,
+  ref,
+}: ProductCardProps) {
   return (
-    <Card>
+    <Card ref={ref}>
       <CardContent>
         <Image src={image} alt="Product" width={200} height={200} />
       </CardContent>
