@@ -1,7 +1,7 @@
-import { Product } from "../products/types";
+import { ProductType } from "../products/types";
 
 export type BaseResponse = {
-  products: Product[];
+  products: ProductType[];
   limit: number;
   skip: number;
   total: number;

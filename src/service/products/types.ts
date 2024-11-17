@@ -1,59 +1,74 @@
-export type Product = {
+export const productCategories = [
+  "beauty",
+  "fragrances",
+  "furniture",
+  "groceries",
+  "home-decoration",
+  "kitchen-accessories",
+  "laptops",
+  "mens-shirts",
+  "mens-shoes",
+  "mens-watches",
+  "mobile-accessories",
+  "motorcycle",
+  "skin-care",
+  "smartphones",
+  "sports-accessories",
+  "sunglasses",
+  "tablets",
+  "tops",
+  "vehicle",
+  "womens-bags",
+  "womens-dresses",
+  "womens-jewellery",
+  "womens-shoes",
+  "womens-watches",
+] as const;
+
+export type ProductCategoryType = (typeof productCategories)[number];
+
+export type ProductType = {
   id: number;
   title: string;
   description: string;
-  category: "beauty";
+  category: ProductCategoryType;
   price: number;
-  /* discountPercentage: 7.17;
-  rating: 4.94;
-  stock: 5;
-  tags: ["beauty", "mascara"];
-  brand: "Essence";
-  sku: "RCH45Q1A";
-  weight: 2;
-  dimensions: {
-    width: 23.17;
-    height: 14.43;
-    depth: 28.01;
-  };
-  warrantyInformation: "1 month warranty";
-  shippingInformation: "Ships in 1 month";
-  availabilityStatus: "Low Stock";
-  reviews: [
-    {
-      rating: 2;
-      comment: "Very unhappy with my purchase!";
-      date: "2024-05-23T08:56:21.618Z";
-      reviewerName: "John Doe";
-      reviewerEmail: "john.doe@x.dummyjson.com";
-    },
-    {
-      rating: 2;
-      comment: "Not as described!";
-      date: "2024-05-23T08:56:21.618Z";
-      reviewerName: "Nolan Gonzalez";
-      reviewerEmail: "nolan.gonzalez@x.dummyjson.com";
-      },
-      {
-        rating: 5;
-        comment: "Very satisfied!";
-        date: "2024-05-23T08:56:21.618Z";
-        reviewerName: "Scarlett Wright";
-        reviewerEmail: "scarlett.wright@x.dummyjson.com";
-        }
-        ];
-        returnPolicy: "30 days return policy";
-        minimumOrderQuantity: 24;
-        meta: {
-          createdAt: "2024-05-23T08:56:21.618Z";
-          updatedAt: "2024-05-23T08:56:21.618Z";
-          barcode: "9164035109868";
-          qrCode: "https://assets.dummyjson.com/public/qr-code.png";
-          };
-          images: [
-            "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
-            ];
-            
-            */
+  discountPercentage: number;
+  rating: number;
+  stock: number;
+  tags: string[];
+  brand: string;
+  sku: string;
+  weight: number;
+  dimensions: ProductDimensionsType;
+  warrantyInformation: string;
+  shippingInformation: string;
+  availabilityStatus: string;
+  reviews: ProductReviewType[];
+  returnPolicy: string;
+  minimumOrderQuantity: number;
+  meta: ProducMetadataType;
+  images: string[];
   thumbnail: string;
+};
+
+export type ProductDimensionsType = {
+  width: number;
+  height: number;
+  depth: number;
+};
+
+export type ProductReviewType = {
+  rating: number;
+  comment: string;
+  date: string;
+  reviewerName: string;
+  reviewerEmail: string;
+};
+
+export type ProducMetadataType = {
+  createdAt: string;
+  updatedAt: string;
+  barcode: string;
+  qrCode: string;
 };
