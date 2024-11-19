@@ -1,14 +1,7 @@
 "use client";
 import { ShoppingCart } from "lucide-react";
 import { useProducts } from "@/service/products/queries";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
+import { Card } from "./ui/card";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { formatPrice } from "@/lib/utils";
@@ -85,25 +78,25 @@ function ProductCard({
   ref,
 }: ProductCardProps) {
   return (
-    <Card ref={ref}>
-      <CardContent>
+    <Card.Root ref={ref}>
+      <Card.Content>
         <Image src={image} alt="Product" width={200} height={200} />
-      </CardContent>
+      </Card.Content>
 
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription className="line-clamp-3">
+      <Card.Header>
+        <Card.Title>{title}</Card.Title>
+        <Card.Description className="line-clamp-3">
           {description}
-        </CardDescription>
-      </CardHeader>
+        </Card.Description>
+      </Card.Header>
 
-      <CardFooter className="flex justify-between items-center">
+      <Card.Footer className="flex justify-between items-center">
         <p>{formatPrice(price)}</p>
 
         <Button variant="ghost" title="Add to card">
           <ShoppingCart />
         </Button>
-      </CardFooter>
-    </Card>
+      </Card.Footer>
+    </Card.Root>
   );
 }
