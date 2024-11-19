@@ -26,7 +26,9 @@ export const productCategories = [
 ] as const;
 
 export enum ProductSortBy {
-  TITLE = "title",
-  BRAND = "brand",
+  TITLE_ASC = "title_asc",
+  TITLE_DESC = "title_desc",
+  BRAND_ASC = "brand_asc",
+  BRAND_DESC = "brand_desc",
   NONE = "none",
 }

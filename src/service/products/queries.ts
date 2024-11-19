@@ -6,12 +6,18 @@ import {
 import { AxiosError } from "axios";
 import { getProducts } from ".";
 import { BaseResponse } from "../base/types";
+import { ProductSortBy } from "./data";
 
 enum QueryKeys {
   PRODUCTS = "products",
 }
 
+type UseProductParamsType = {
+  sortBy?: ProductSortBy;
+};
+
 export function useProducts(
+  params?: UseProductParamsType,
   queryOptions?: Omit<
     UseInfiniteQueryOptions<
       BaseResponse,
@@ -23,11 +29,14 @@ export function useProducts(
 ) {
   return useInfiniteQuery({
     queryFn: async ({ pageParam = 1 }) => {
-      const data = await getProducts(Number(pageParam));
+      const data = await getProducts({
+        page: Number(pageParam),
+        sortBy: params?.sortBy,
+      });
 
       return data;
     },
-    queryKey: [QueryKeys.PRODUCTS],
+    queryKey: [QueryKeys.PRODUCTS, params],
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
       lastPage?.products.length ? allPages.length + 1 : undefined,
