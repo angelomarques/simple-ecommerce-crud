@@ -7,6 +7,14 @@ import { Button } from "./ui/button";
 import { formatPrice } from "@/lib/utils";
 import { useCallback, useRef } from "react";
 import { LoadingSpinner } from "@/assets/loading-spinner";
+import { Select } from "./ui/select";
+import { ProductSortBy } from "@/service/products/data";
+
+const sortByOptions = [
+  { value: ProductSortBy.TITLE, label: "Title" },
+  { value: ProductSortBy.BRAND, label: "Brand" },
+  { value: ProductSortBy.NONE, label: "None" },
+];
 
 export function ProductsList() {
   const {
@@ -38,7 +46,24 @@ export function ProductsList() {
 
   return (
     <>
-      <div className="grid grid-cols-4 gap-5">
+      <div className="flex items-center gap-2">
+        <p className="text-sm">Sort by</p>
+        <Select.Root defaultValue={ProductSortBy.NONE}>
+          <Select.Trigger className="w-48">
+            <Select.Value placeholder="Select a category" />
+          </Select.Trigger>
+
+          <Select.Content>
+            {sortByOptions.map((option) => (
+              <Select.Item key={option.value} value={option.value}>
+                {option.label}
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select.Root>
+      </div>
+
+      <div className="grid grid-cols-4 gap-5 mt-4">
         {products?.pages.map((item) =>
           item.products.map((product) => (
             <ProductCard
