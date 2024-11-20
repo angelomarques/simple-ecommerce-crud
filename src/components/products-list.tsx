@@ -29,6 +29,7 @@ export function ProductsList() {
     hasNextPage,
     fetchNextPage,
     isFetching,
+    isLoading: isQueryLoading,
   } = useProducts({ sortBy: selectedSortBy });
   const observer = useRef<IntersectionObserver>();
   const isLoading = isFetchingNextPage || isFetching;
@@ -75,26 +76,29 @@ export function ProductsList() {
           </Select.Content>
         </Select.Root>
       </div>
-
-      <div className="grid grid-cols-4 gap-5 mt-4">
-        {products?.pages.map((item) =>
-          item.products.map((product) => (
-            <ProductCard
-              key={product.id}
-              title={product.title}
-              description={product.description}
-              image={product.thumbnail}
-              price={product.price}
-              ref={lastElementRef}
-            />
-          ))
-        )}
-      </div>
+      {isQueryLoading ? (
+        <div className="flex justify-center items-center flex-1">
+          <LoadingSpinner fill="white" size={48} />
+        </div>
+      ) : (
+        <div className="grid grid-cols-4 gap-5 mt-4 relative">
+          {products?.pages.map((item) =>
+            item.products.map((product) => (
+              <ProductCard
+                key={product.id}
+                title={product.title}
+                description={product.description}
+                image={product.thumbnail}
+                price={product.price}
+                ref={lastElementRef}
+              />
+            ))
+          )}
+        </div>
+      )}
 
       {isFetchingNextPage && (
-        <div className="flex justify-center py-2 mt-3">
-          <LoadingSpinner fill="white" />
-        </div>
+        <div className="flex justify-center py-2 mt-3"></div>
       )}
     </>
   );
