@@ -11,6 +11,7 @@ import { LoadingSpinner } from "@/assets/loading-spinner";
 import { Select } from "./ui/select";
 import { ProductSortBy } from "@/service/products/data";
 import { useProductsStore } from "@/store/products";
+import { UserViewType, useUserStore } from "@/store/user";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -26,6 +27,7 @@ export function ProductsList() {
   );
 
   const productsSearch = useProductsStore((state) => state.queries?.search);
+  const userView = useUserStore((state) => state.view);
 
   const {
     data: products,
@@ -80,6 +82,7 @@ export function ProductsList() {
           </Select.Content>
         </Select.Root>
       </div>
+
       {isQueryLoading ? (
         <div className="flex justify-center items-center flex-1">
           <LoadingSpinner fill="white" size={48} />
@@ -95,6 +98,7 @@ export function ProductsList() {
                 image={product.thumbnail}
                 price={product.price}
                 ref={lastElementRef}
+                userView={userView}
               />
             ))
           )}
@@ -114,6 +118,7 @@ interface ProductCardProps {
   image: string;
   price: number;
   ref: (node: HTMLDivElement) => void;
+  userView: UserViewType;
 }
 
 function ProductCard({
@@ -122,6 +127,7 @@ function ProductCard({
   image,
   price,
   ref,
+  userView,
 }: ProductCardProps) {
   return (
     <Card.Root ref={ref}>
@@ -139,7 +145,11 @@ function ProductCard({
       <Card.Footer className="flex justify-between items-center">
         <p>{formatPrice(price)}</p>
 
-        <Button variant="ghost" title="Add to card">
+        <Button
+          variant="secondary"
+          title="Add to card"
+          disabled={userView === "admin"}
+        >
           <ShoppingCart />
         </Button>
       </Card.Footer>

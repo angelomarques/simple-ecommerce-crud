@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type UserViewType = "customer" | "admin";
+export type UserViewType = "customer" | "admin";
 
 interface UserState {
   view: UserViewType;
