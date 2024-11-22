@@ -1,6 +1,6 @@
 "use client";
 
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Sheet } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { SIDEBAR_WIDTH_MOBILE } from "./constants";
@@ -44,8 +44,8 @@ export const SidebarRoot = React.forwardRef<
 
     if (isMobile) {
       return (
-        <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-          <SheetContent
+        <Sheet.Root open={openMobile} onOpenChange={setOpenMobile} {...props}>
+          <Sheet.Content
             data-sidebar="sidebar"
             data-mobile="true"
             className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
@@ -57,8 +57,8 @@ export const SidebarRoot = React.forwardRef<
             side={side}
           >
             <div className="flex h-full w-full flex-col">{children}</div>
-          </SheetContent>
-        </Sheet>
+          </Sheet.Content>
+        </Sheet.Root>
       );
     }
 
