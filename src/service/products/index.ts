@@ -6,6 +6,7 @@ type GetProductsParamsType = {
   page?: number;
   limit?: number;
   sortBy?: ProductSortBy;
+  search?: string;
 };
 
 const getSortByParams = (sortBy: ProductSortBy) => {
@@ -27,11 +28,14 @@ export const getProducts = async ({
   page = 1,
   limit = 10,
   sortBy = ProductSortBy.NONE,
+  search,
 }: GetProductsParamsType) => {
   const sortByParams = getSortByParams(sortBy);
 
-  const { data } = await api.get("/products", {
-    params: { skip: page * limit, limit, ...sortByParams },
+  const suffixRoute = search ? `/search` : "";
+
+  const { data } = await api.get(`/products${suffixRoute}`, {
+    params: { skip: page * limit, limit, q: search, ...sortByParams },
   });
 
   return data as BaseResponse;

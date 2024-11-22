@@ -14,6 +14,7 @@ enum QueryKeys {
 
 type UseProductParamsType = {
   sortBy?: ProductSortBy;
+  search?: string;
 };
 
 export function useProducts(
@@ -32,6 +33,7 @@ export function useProducts(
       const data = await getProducts({
         page: Number(pageParam),
         sortBy: params?.sortBy,
+        search: params?.search,
       });
 
       return data;

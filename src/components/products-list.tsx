@@ -1,4 +1,5 @@
 "use client";
+
 import { ShoppingCart } from "lucide-react";
 import { useProducts } from "@/service/products/queries";
 import { Card } from "./ui/card";
@@ -9,6 +10,7 @@ import { useCallback, useRef, useState } from "react";
 import { LoadingSpinner } from "@/assets/loading-spinner";
 import { Select } from "./ui/select";
 import { ProductSortBy } from "@/service/products/data";
+import { useProductsStore } from "@/store/products";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -23,6 +25,8 @@ export function ProductsList() {
     ProductSortBy.NONE
   );
 
+  const productsSearch = useProductsStore((state) => state.queries?.search);
+
   const {
     data: products,
     isFetchingNextPage,
@@ -30,7 +34,7 @@ export function ProductsList() {
     fetchNextPage,
     isFetching,
     isLoading: isQueryLoading,
-  } = useProducts({ sortBy: selectedSortBy });
+  } = useProducts({ sortBy: selectedSortBy, search: productsSearch });
   const observer = useRef<IntersectionObserver>();
   const isLoading = isFetchingNextPage || isFetching;
 
