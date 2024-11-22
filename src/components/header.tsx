@@ -1,11 +1,11 @@
 "use client";
 
+import { useProductsStore } from "@/store/products";
+import { useUserStore } from "@/store/user";
 import { User } from "lucide-react";
 import { Avatar } from "./ui/avatar";
-import { SearchInput } from "./ui/search-input";
-import { useProductsStore } from "@/store/products";
 import { Button } from "./ui/button";
-import { useUserStore } from "@/store/user";
+import { SearchInput } from "./ui/search-input";
 
 export function Header() {
   const setProductSearch = useProductsStore((state) => state.setQuerySearch);
