@@ -8,19 +8,25 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters.",
   }),
   description: z.string(),
-  price: z.number().min(1, {
+  price: z.coerce.number().min(1, {
     message: "Price must be at least 1 dollar.",
   }),
 });
 export const CreateProduct = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      price: 0,
+    },
   });
   const router = useRouter();
 
@@ -28,6 +34,7 @@ export const CreateProduct = () => {
     console.log(values);
     alert(JSON.stringify(values, null, 2));
 
+    toast.success("Product created successfully!");
     router.push("/");
   }
 
@@ -78,10 +85,13 @@ export const CreateProduct = () => {
 
               <Form.Control>
                 <Input
+                  type="number"
                   placeholder="Type the price of the product..."
                   {...field}
                 />
               </Form.Control>
+
+              <Form.Message />
 
               <Form.Description>The minimum price is $1.</Form.Description>
             </Form.Item>
