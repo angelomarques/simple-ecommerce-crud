@@ -7,6 +7,7 @@ import { Avatar } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { SearchInput } from "./ui/search-input";
 import { DropdownMenu } from "./ui/dropdown-menu";
+import Link from "next/link";
 
 export function Header() {
   const setProductSearch = useProductsStore((state) => state.setQuerySearch);
@@ -30,7 +31,9 @@ export function Header() {
   return (
     <header className="w-full border-b border-b-slate-500">
       <div className="max-w-6xl mx-auto py-4 flex justify-between items-center">
-        <h1 className="text-3xl font-bold flex-1">Simple Store</h1>
+        <Link href="/" className="flex-1">
+          <h1 className="text-3xl font-bold">Simple Store</h1>
+        </Link>
 
         <SearchInput onSearch={handleSearch} />
 
@@ -53,12 +56,20 @@ export function Header() {
   );
 }
 
-const userMenuItems = [
+type MenuItem = {
+  label: string;
+  icon: React.ReactNode;
+  href?: string;
+};
+
+const userMenuItems: MenuItem[] = [
   { label: "My Cart", icon: <ShoppingCart /> },
   { label: "Profile", icon: <User /> },
 ];
 
-const adminMenuItems = [{ label: "New Product", icon: <Plus /> }];
+const adminMenuItems: MenuItem[] = [
+  { label: "New Product", icon: <Plus />, href: "/admin/products/new" },
+];
 
 const HeaderMenu = () => {
   const userView = useUserStore((state) => state.view);
@@ -74,13 +85,23 @@ const HeaderMenu = () => {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content>
-        {menuItems.map(({ label, icon: Icon }) => (
-          <DropdownMenu.Item key={label}>
-            {Icon}
+        {menuItems.map(({ label, icon: Icon, href }) =>
+          href ? (
+            <DropdownMenu.Item key={label} asChild>
+              <Link href={href}>
+                {Icon}
 
-            <span>{label}</span>
-          </DropdownMenu.Item>
-        ))}
+                <span>{label}</span>
+              </Link>
+            </DropdownMenu.Item>
+          ) : (
+            <DropdownMenu.Item key={label}>
+              {Icon}
+
+              <span>{label}</span>
+            </DropdownMenu.Item>
+          )
+        )}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );
