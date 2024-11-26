@@ -47,3 +47,8 @@ export type ProducMetadataType = {
   barcode: string;
   qrCode: string;
 };
+
+export type CreateProductPayloadType = Pick<
+  ProductType,
+  "title" | "description" | "price"
+>;

@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useCreateProductMutation } from "@/service/products/mutations";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -30,12 +31,18 @@ export const CreateProduct = () => {
   });
   const router = useRouter();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    alert(JSON.stringify(values, null, 2));
+  const { mutate: createProduct, isPending } = useCreateProductMutation({
+    onSuccess: () => {
+      toast.success("Product created successfully!");
+      router.push("/");
+    },
+    onError: () => {
+      toast.error("An error occurred while creating the product.");
+    },
+  });
 
-    toast.success("Product created successfully!");
-    router.push("/");
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    createProduct(values);
   }
 
   return (
@@ -44,6 +51,7 @@ export const CreateProduct = () => {
         <Form.Field
           control={form.control}
           name="title"
+          disabled={isPending}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Title</Form.Label>
@@ -61,6 +69,7 @@ export const CreateProduct = () => {
         <Form.Field
           control={form.control}
           name="description"
+          disabled={isPending}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Description</Form.Label>
@@ -79,6 +88,7 @@ export const CreateProduct = () => {
         <Form.Field
           control={form.control}
           name="price"
+          disabled={isPending}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Price ($)</Form.Label>
@@ -98,7 +108,9 @@ export const CreateProduct = () => {
           )}
         />
 
-        <Button type="submit">Create</Button>
+        <Button type="submit" isLoading={isPending}>
+          Create
+        </Button>
       </form>
     </Form.Root>
   );

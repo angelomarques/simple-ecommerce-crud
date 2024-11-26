@@ -1,6 +1,7 @@
 import { api } from "@/lib/api";
 import { BaseResponse } from "../base/types";
 import { ProductSortBy } from "./data";
+import { CreateProductPayloadType, ProductType } from "./types";
 
 type GetProductsParamsType = {
   page?: number;
@@ -34,9 +35,15 @@ export const getProducts = async ({
 
   const suffixRoute = search ? `/search` : "";
 
-  const { data } = await api.get(`/products${suffixRoute}`, {
+  const { data } = await api.get<BaseResponse>(`/products${suffixRoute}`, {
     params: { skip: page * limit, limit, q: search, ...sortByParams },
   });
 
-  return data as BaseResponse;
+  return data;
+};
+
+export const createProduct = async (data: CreateProductPayloadType) => {
+  const { data: response } = await api.post<ProductType>("/products/add", data);
+
+  return response;
 };
