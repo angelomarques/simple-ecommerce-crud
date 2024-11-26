@@ -33,6 +33,7 @@ export const CreateProduct = () => {
 
   const { mutate: createProduct, isPending } = useCreateProductMutation({
     onSuccess: () => {
+      form.reset();
       toast.success("Product created successfully!");
       router.push("/");
     },
