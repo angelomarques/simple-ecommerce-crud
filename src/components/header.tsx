@@ -2,30 +2,26 @@
 
 import { useProductsStore } from "@/store/products";
 import { useUserStore } from "@/store/user";
-import { Plus, ShoppingCart, SlidersHorizontal, User } from "lucide-react";
+import {
+  Columns2,
+  Plus,
+  ShoppingCart,
+  SlidersHorizontal,
+  User,
+} from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import { Avatar } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { SearchInput } from "./ui/search-input";
+import { Dialog } from "./ui/dialog";
 import { DropdownMenu } from "./ui/dropdown-menu";
-import Link from "next/link";
+import { SearchInput } from "./ui/search-input";
 
 export function Header() {
   const setProductSearch = useProductsStore((state) => state.setQuerySearch);
-  const { toggleView: toggleUserView, view: userView } = useUserStore(
-    (state) => state
-  );
 
   const handleSearch = (query: string) => {
     setProductSearch(query);
-  };
-
-  const getViewButtonText = () => {
-    switch (userView) {
-      case "admin":
-        return "Customer view";
-      case "customer":
-        return "Admin view";
-    }
   };
 
   return (
@@ -38,10 +34,6 @@ export function Header() {
         <SearchInput onSearch={handleSearch} />
 
         <div className="flex-1 flex items-center justify-end gap-3">
-          <Button variant="outline" onClick={toggleUserView}>
-            {getViewButtonText()}
-          </Button>
-
           <HeaderMenu />
 
           <Avatar.Root>
@@ -73,36 +65,96 @@ const adminMenuItems: MenuItem[] = [
 
 const HeaderMenu = () => {
   const userView = useUserStore((state) => state.view);
+  const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = userView === "admin" ? adminMenuItems : userMenuItems;
 
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <Button variant="outline">
-          <SlidersHorizontal />
-        </Button>
-      </DropdownMenu.Trigger>
+  const handleToggleView = (newIsOpen: boolean) => {
+    setIsOpen(newIsOpen);
+  };
 
-      <DropdownMenu.Content>
-        {menuItems.map(({ label, icon: Icon, href }) =>
-          href ? (
-            <DropdownMenu.Item key={label} asChild>
-              <Link href={href}>
+  const onChangeViewDialogOpen = () => {
+    setIsOpen(true);
+  };
+
+  return (
+    <>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <Button variant="outline">
+            <SlidersHorizontal />
+          </Button>
+        </DropdownMenu.Trigger>
+
+        <DropdownMenu.Content>
+          {menuItems.map(({ label, icon: Icon, href }) =>
+            href ? (
+              <DropdownMenu.Item key={label} asChild>
+                <Link href={href}>
+                  {Icon}
+
+                  <span>{label}</span>
+                </Link>
+              </DropdownMenu.Item>
+            ) : (
+              <DropdownMenu.Item key={label}>
                 {Icon}
 
                 <span>{label}</span>
-              </Link>
-            </DropdownMenu.Item>
-          ) : (
-            <DropdownMenu.Item key={label}>
-              {Icon}
+              </DropdownMenu.Item>
+            )
+          )}
 
-              <span>{label}</span>
-            </DropdownMenu.Item>
-          )
-        )}
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+          <DropdownMenu.Item onClick={onChangeViewDialogOpen}>
+            <Columns2 />
+
+            <span>Change view</span>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+
+      <ChooseViewDialog onOpenChange={handleToggleView} open={isOpen} />
+    </>
+  );
+};
+
+interface ChooseViewDialogProps {
+  onOpenChange: (isOpen: boolean) => void;
+  open: boolean;
+}
+
+const ChooseViewDialog = ({ onOpenChange, open }: ChooseViewDialogProps) => {
+  const { setView } = useUserStore((state) => state);
+
+  const onAdminViewClick = () => {
+    setView("admin");
+    onOpenChange(false);
+  };
+
+  const onCustomerViewClick = () => {
+    setView("customer");
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog.Root onOpenChange={onOpenChange} open={open}>
+      <Dialog.Content>
+        <Dialog.Header>
+          <Dialog.Title>Choose the view</Dialog.Title>
+          <Dialog.Description>
+            You can choose between admin view and user view
+          </Dialog.Description>
+        </Dialog.Header>
+
+        <div className="flex w-full flex-col items-stretch gap-4 mt-6">
+          <Button variant="secondary" onClick={onAdminViewClick}>
+            Admin view
+          </Button>
+          <Button variant="secondary" onClick={onCustomerViewClick}>
+            Customer view
+          </Button>
+        </div>
+      </Dialog.Content>
+    </Dialog.Root>
   );
 };

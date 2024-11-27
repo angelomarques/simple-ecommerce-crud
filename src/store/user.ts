@@ -4,14 +4,14 @@ export type UserViewType = "customer" | "admin";
 
 interface UserState {
   view: UserViewType;
-  toggleView: () => void;
+  setView: (view: UserViewType) => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
   view: "admin",
-  toggleView: () =>
+  setView: (view) =>
     set((state) => ({
       ...state,
-      view: state.view === "admin" ? "customer" : "admin",
+      view,
     })),
 }));

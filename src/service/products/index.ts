@@ -27,7 +27,7 @@ const getSortByParams = (sortBy: ProductSortBy) => {
 
 export const getProducts = async ({
   page = 1,
-  limit = 10,
+  limit = 12,
   sortBy = ProductSortBy.NONE,
   search,
 }: GetProductsParamsType) => {
