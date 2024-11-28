@@ -1,10 +1,10 @@
 "use client";
 
-import { ShoppingCart } from "lucide-react";
+import { Pencil, ShoppingCart } from "lucide-react";
 import { useProducts } from "@/service/products/queries";
 import { Card } from "./ui/card";
 import Image from "next/image";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { formatPrice } from "@/lib/utils";
 import { useCallback, useRef, useState } from "react";
 import { LoadingSpinner } from "@/assets/loading-spinner";
@@ -12,6 +12,7 @@ import { Select } from "./ui/select";
 import { ProductSortBy } from "@/service/products/data";
 import { useProductsStore } from "@/store/products";
 import { UserViewType, useUserStore } from "@/store/user";
+import Link from "next/link";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -99,6 +100,7 @@ export function ProductsList() {
                 price={product.price}
                 ref={lastElementRef}
                 userView={userView}
+                id={product.id}
               />
             ))
           )}
@@ -119,6 +121,7 @@ interface ProductCardProps {
   price: number;
   ref: (node: HTMLDivElement) => void;
   userView: UserViewType;
+  id: number;
 }
 
 function ProductCard({
@@ -128,6 +131,7 @@ function ProductCard({
   price,
   ref,
   userView,
+  id,
 }: ProductCardProps) {
   return (
     <Card.Root ref={ref}>
@@ -145,13 +149,23 @@ function ProductCard({
       <Card.Footer className="flex justify-between items-center">
         <p>{formatPrice(price)}</p>
 
-        <Button
-          variant="secondary"
-          title="Add to card"
-          disabled={userView === "admin"}
-        >
-          <ShoppingCart />
-        </Button>
+        <div className="flex items-center gap-2">
+          {userView === "admin" && (
+            <Link
+              className={buttonVariants({ variant: "secondary" })}
+              title="Edit Product"
+              href={`/admin/products/${id}/edit`}
+            >
+              <Pencil />
+            </Link>
+          )}
+
+          {userView === "customer" && (
+            <Button variant="secondary" title="Add to cart">
+              <ShoppingCart />
+            </Button>
+          )}
+        </div>
       </Card.Footer>
     </Card.Root>
   );

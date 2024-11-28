@@ -1,15 +1,12 @@
 "use client";
 
-import { Form } from "../ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Form } from "../ui/form";
+import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useCreateProductMutation } from "@/service/products/mutations";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -21,7 +18,7 @@ const formSchema = z.object({
   }),
 });
 
-export const CreateProduct = () => {
+export const UpdateProduct = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,21 +27,9 @@ export const CreateProduct = () => {
       price: 0,
     },
   });
-  const router = useRouter();
-
-  const { mutate: createProduct, isPending } = useCreateProductMutation({
-    onSuccess: () => {
-      form.reset();
-      toast.success("Product created successfully!");
-      router.push("/");
-    },
-    onError: () => {
-      toast.error("An error occurred while creating the product.");
-    },
-  });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    createProduct(values);
+    console.log(values);
   }
 
   return (
@@ -53,7 +38,6 @@ export const CreateProduct = () => {
         <Form.Field
           control={form.control}
           name="title"
-          disabled={isPending}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Title</Form.Label>
@@ -71,7 +55,6 @@ export const CreateProduct = () => {
         <Form.Field
           control={form.control}
           name="description"
-          disabled={isPending}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Description</Form.Label>
@@ -90,7 +73,6 @@ export const CreateProduct = () => {
         <Form.Field
           control={form.control}
           name="price"
-          disabled={isPending}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Price ($)</Form.Label>
@@ -110,9 +92,7 @@ export const CreateProduct = () => {
           )}
         />
 
-        <Button type="submit" isLoading={isPending}>
-          Create
-        </Button>
+        <Button type="submit">Update</Button>
       </form>
     </Form.Root>
   );
