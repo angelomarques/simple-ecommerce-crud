@@ -47,3 +47,9 @@ export const createProduct = async (data: CreateProductPayloadType) => {
 
   return response;
 };
+
+export const getProductById = async (id: number) => {
+  const { data } = await api.get<ProductType>(`/products/${id}`);
+
+  return data;
+};

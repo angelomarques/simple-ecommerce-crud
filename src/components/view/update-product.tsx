@@ -1,6 +1,8 @@
 "use client";
 
+import { useProductsById } from "@/service/products/queries";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -19,12 +21,22 @@ const formSchema = z.object({
 });
 
 export const UpdateProduct = () => {
+  const { id } = useParams() as { id: string };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       description: "",
       price: 0,
+    },
+  });
+
+  const { isLoading } = useProductsById(Number(id), {
+    onSuccess: (data) => {
+      form.setValue("title", data.title);
+      form.setValue("description", data.description);
+      form.setValue("price", data.price);
     },
   });
 
@@ -38,6 +50,7 @@ export const UpdateProduct = () => {
         <Form.Field
           control={form.control}
           name="title"
+          disabled={isLoading}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Title</Form.Label>
@@ -55,6 +68,7 @@ export const UpdateProduct = () => {
         <Form.Field
           control={form.control}
           name="description"
+          disabled={isLoading}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Description</Form.Label>
@@ -73,6 +87,7 @@ export const UpdateProduct = () => {
         <Form.Field
           control={form.control}
           name="price"
+          disabled={isLoading}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Price ($)</Form.Label>
@@ -92,7 +107,9 @@ export const UpdateProduct = () => {
           )}
         />
 
-        <Button type="submit">Update</Button>
+        <Button type="submit" disabled={isLoading}>
+          Update
+        </Button>
       </form>
     </Form.Root>
   );

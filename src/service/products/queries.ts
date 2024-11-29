@@ -2,11 +2,13 @@ import {
   InfiniteData,
   useInfiniteQuery,
   UseInfiniteQueryOptions,
+  useQuery,
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { getProducts } from ".";
+import { getProductById, getProducts } from ".";
 import { BaseResponse } from "../base/types";
 import { ProductSortBy } from "./data";
+import { ProductType } from "./types";
 
 enum QueryKeys {
   PRODUCTS = "products",
@@ -43,5 +45,23 @@ export function useProducts(
     getNextPageParam: (lastPage, allPages) =>
       lastPage?.products.length ? allPages.length + 1 : undefined,
     ...queryOptions,
+  });
+}
+
+export function useProductsById(
+  id: number,
+  callbacks?: { onSuccess?: (data: ProductType) => void }
+) {
+  return useQuery<ProductType>({
+    queryKey: [QueryKeys.PRODUCTS, id],
+    queryFn: async () => {
+      const data = await getProductById(id);
+
+      if (callbacks?.onSuccess) {
+        callbacks.onSuccess(data);
+      }
+
+      return data;
+    },
   });
 }
