@@ -2,13 +2,15 @@
 
 import { useProductsById } from "@/service/products/queries";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { useUpdateProductMutation } from "@/service/products/mutations";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -22,6 +24,7 @@ const formSchema = z.object({
 
 export const UpdateProduct = () => {
   const { id } = useParams() as { id: string };
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,8 +43,22 @@ export const UpdateProduct = () => {
     },
   });
 
+  const { mutate: updateProduct, isPending } = useUpdateProductMutation(
+    Number(id),
+    {
+      onSuccess: () => {
+        form.reset();
+        toast.success("Product updated successfully!");
+        router.push("/");
+      },
+      onError: () => {
+        toast.error("An error occurred while updating the product.");
+      },
+    }
+  );
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    updateProduct(values);
   }
 
   return (
@@ -50,7 +67,7 @@ export const UpdateProduct = () => {
         <Form.Field
           control={form.control}
           name="title"
-          disabled={isLoading}
+          disabled={isLoading || isPending}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Title</Form.Label>
@@ -68,7 +85,7 @@ export const UpdateProduct = () => {
         <Form.Field
           control={form.control}
           name="description"
-          disabled={isLoading}
+          disabled={isLoading || isPending}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Description</Form.Label>
@@ -87,7 +104,7 @@ export const UpdateProduct = () => {
         <Form.Field
           control={form.control}
           name="price"
-          disabled={isLoading}
+          disabled={isLoading || isPending}
           render={({ field }) => (
             <Form.Item>
               <Form.Label>Price ($)</Form.Label>
@@ -107,7 +124,7 @@ export const UpdateProduct = () => {
           )}
         />
 
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isLoading} isLoading={isPending}>
           Update
         </Button>
       </form>

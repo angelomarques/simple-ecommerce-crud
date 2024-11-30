@@ -53,3 +53,15 @@ export const getProductById = async (id: number) => {
 
   return data;
 };
+
+export const updateProduct = async (
+  id: number,
+  data: CreateProductPayloadType
+) => {
+  const { data: response } = await api.put<ProductType>(
+    `/products/${id}`,
+    data
+  );
+
+  return response;
+};
