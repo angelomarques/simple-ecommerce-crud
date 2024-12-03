@@ -1,33 +1,32 @@
-"use client";
+import { getProductById } from "@/service/products";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { EditProductDialog } from "./dialog";
+import { QueryKeys } from "@/service/products/queries";
 
-import { Dialog } from "@/components/ui/dialog";
-import { UpdateProduct } from "@/components/view/update-product";
-import { usePathname, useRouter } from "next/navigation";
+interface Props {
+  params: Promise<{ id: string }>;
+}
 
-export default function NewProductModal() {
-  const router = useRouter();
-  const pathname = usePathname();
+export default async function EditProductModalPage({ params }: Props) {
+  const { id } = await params;
+  const queryClient = new QueryClient();
 
-  const pathRegex = /admin\/products\/\d+\/edit/;
-  const isDialogOpen = pathRegex.test(pathname);
+  await queryClient.prefetchQuery({
+    queryKey: [QueryKeys.PRODUCTS, Number(id)],
+    queryFn: async () => {
+      const response = await getProductById(Number(id));
 
-  const handleDialogOpenChange = (open: boolean) => {
-    if (!open) router.push("/");
-  };
+      return response;
+    },
+  });
 
   return (
-    <Dialog.Root open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
-      <Dialog.Content>
-        <Dialog.Header>
-          <Dialog.Title>Edit Product</Dialog.Title>
-
-          <Dialog.Description>
-            Update the necessary fields for your product.
-          </Dialog.Description>
-        </Dialog.Header>
-
-        <UpdateProduct />
-      </Dialog.Content>
-    </Dialog.Root>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <EditProductDialog />
+    </HydrationBoundary>
   );
 }

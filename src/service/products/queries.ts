@@ -10,7 +10,7 @@ import { BaseResponse } from "../base/types";
 import { ProductSortBy } from "./data";
 import { ProductType } from "./types";
 
-enum QueryKeys {
+export enum QueryKeys {
   PRODUCTS = "products",
 }
 
@@ -48,18 +48,11 @@ export function useProducts(
   });
 }
 
-export function useProductsById(
-  id: number,
-  callbacks?: { onSuccess?: (data: ProductType) => void }
-) {
+export function useProductsById(id: number) {
   return useQuery<ProductType>({
     queryKey: [QueryKeys.PRODUCTS, id],
     queryFn: async () => {
       const data = await getProductById(id);
-
-      if (callbacks?.onSuccess) {
-        callbacks.onSuccess(data);
-      }
 
       return data;
     },

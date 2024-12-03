@@ -26,20 +26,14 @@ export const UpdateProduct = () => {
   const { id } = useParams() as { id: string };
   const router = useRouter();
 
+  const { data: product, isLoading } = useProductsById(Number(id));
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      price: 0,
-    },
-  });
-
-  const { isLoading } = useProductsById(Number(id), {
-    onSuccess: (data) => {
-      form.setValue("title", data.title);
-      form.setValue("description", data.description);
-      form.setValue("price", data.price);
+      title: product?.title ?? "",
+      description: product?.description ?? "",
+      price: product?.price ?? 0,
     },
   });
 
