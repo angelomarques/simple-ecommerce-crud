@@ -1,6 +1,6 @@
 "use client";
 
-import { Pencil, ShoppingCart } from "lucide-react";
+import { Pencil, ShoppingCart, Trash } from "lucide-react";
 import { useProducts } from "@/service/products/queries";
 import { Card } from "./ui/card";
 import Image from "next/image";
@@ -13,6 +13,7 @@ import { ProductSortBy } from "@/service/products/data";
 import { useProductsStore } from "@/store/products";
 import { UserViewType, useUserStore } from "@/store/user";
 import Link from "next/link";
+import { AlertDialog } from "./ui/alert-dialog";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -151,13 +152,17 @@ function ProductCard({
 
         <div className="flex items-center gap-2">
           {userView === "admin" && (
-            <Link
-              className={buttonVariants({ variant: "secondary" })}
-              title="Edit Product"
-              href={`/admin/products/${id}/edit`}
-            >
-              <Pencil />
-            </Link>
+            <>
+              <DeleteProductDialog />
+
+              <Link
+                className={buttonVariants({ variant: "secondary" })}
+                title="Edit Product"
+                href={`/admin/products/${id}/edit`}
+              >
+                <Pencil />
+              </Link>
+            </>
           )}
 
           {userView === "customer" && (
@@ -170,3 +175,29 @@ function ProductCard({
     </Card.Root>
   );
 }
+
+const DeleteProductDialog = () => {
+  return (
+    <AlertDialog.Root>
+      <AlertDialog.Trigger asChild>
+        <Button variant="secondary">
+          <Trash />
+        </Button>
+      </AlertDialog.Trigger>
+
+      <AlertDialog.Content>
+        <AlertDialog.Header>
+          <AlertDialog.Title>Delete Product</AlertDialog.Title>
+          <AlertDialog.Description>
+            Are you sure you want to delete this product?
+          </AlertDialog.Description>
+        </AlertDialog.Header>
+
+        <AlertDialog.Footer>
+          <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+          <AlertDialog.Action>Delete</AlertDialog.Action>
+        </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog.Root>
+  );
+};
