@@ -65,3 +65,9 @@ export const updateProduct = async (
 
   return response;
 };
+
+export const deleteProduct = async (id: number) => {
+  const { data } = await api.delete<ProductType>(`/products/${id}`);
+
+  return data;
+};

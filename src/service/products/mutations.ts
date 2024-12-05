@@ -1,6 +1,6 @@
 import { MutationOptions, useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { createProduct, updateProduct } from ".";
+import { createProduct, deleteProduct, updateProduct } from ".";
 import { CreateProductPayloadType, ProductType } from "./types";
 
 export const useCreateProductMutation = (
@@ -34,4 +34,19 @@ export const useUpdateProductMutation = (
       ...mutationOptions,
     }
   );
+};
+
+export const useDeleteProductMutation = (
+  id: number,
+  mutationOptions: Omit<
+    MutationOptions<ProductType, AxiosError<string>>,
+    "mutationFn"
+  >
+) => {
+  return useMutation<ProductType, AxiosError<string>>({
+    mutationFn: () => {
+      return deleteProduct(id);
+    },
+    ...mutationOptions,
+  });
 };

@@ -1,19 +1,21 @@
 "use client";
 
-import { Pencil, ShoppingCart, Trash } from "lucide-react";
-import { useProducts } from "@/service/products/queries";
-import { Card } from "./ui/card";
-import Image from "next/image";
-import { Button, buttonVariants } from "./ui/button";
-import { formatPrice } from "@/lib/utils";
-import { useCallback, useRef, useState } from "react";
 import { LoadingSpinner } from "@/assets/loading-spinner";
-import { Select } from "./ui/select";
+import { formatPrice } from "@/lib/utils";
 import { ProductSortBy } from "@/service/products/data";
+import { useDeleteProductMutation } from "@/service/products/mutations";
+import { useProducts } from "@/service/products/queries";
 import { useProductsStore } from "@/store/products";
 import { UserViewType, useUserStore } from "@/store/user";
+import { Pencil, ShoppingCart, Trash } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { MouseEvent, useCallback, useRef, useState } from "react";
 import { AlertDialog } from "./ui/alert-dialog";
+import { Button, buttonVariants } from "./ui/button";
+import { Card } from "./ui/card";
+import { Select } from "./ui/select";
+import { toast } from "sonner";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -153,7 +155,7 @@ function ProductCard({
         <div className="flex items-center gap-2">
           {userView === "admin" && (
             <>
-              <DeleteProductDialog />
+              <DeleteProductDialog id={id} productTitle={title} />
 
               <Link
                 className={buttonVariants({ variant: "secondary" })}
@@ -176,9 +178,39 @@ function ProductCard({
   );
 }
 
-const DeleteProductDialog = () => {
+interface DeleteProductDialogProps {
+  id: number;
+  productTitle: string;
+}
+
+const DeleteProductDialog = ({
+  id,
+  productTitle,
+}: DeleteProductDialogProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { mutate: deleteProduct, isPending } = useDeleteProductMutation(id, {
+    onSuccess: () => {
+      toast.success("Product deleted successfully!");
+      setIsOpen(false);
+    },
+    onError: () => {
+      toast.error("An error occurred while deleting the product.");
+    },
+  });
+
+  const handleConfirmClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    deleteProduct();
+  };
+
+  const handleDialogOpenChange = (open: boolean) => {
+    setIsOpen(open);
+  };
+
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root open={isOpen} onOpenChange={handleDialogOpenChange}>
       <AlertDialog.Trigger asChild>
         <Button variant="secondary">
           <Trash />
@@ -189,13 +221,21 @@ const DeleteProductDialog = () => {
         <AlertDialog.Header>
           <AlertDialog.Title>Delete Product</AlertDialog.Title>
           <AlertDialog.Description>
-            Are you sure you want to delete this product?
+            {`Are you sure you want to delete the product "${productTitle}"?`}
           </AlertDialog.Description>
         </AlertDialog.Header>
 
         <AlertDialog.Footer>
           <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-          <AlertDialog.Action>Delete</AlertDialog.Action>
+          <AlertDialog.Action asChild>
+            <Button
+              variant="destructive"
+              onClick={handleConfirmClick}
+              isLoading={isPending}
+            >
+              Delete
+            </Button>
+          </AlertDialog.Action>
         </AlertDialog.Footer>
       </AlertDialog.Content>
     </AlertDialog.Root>
