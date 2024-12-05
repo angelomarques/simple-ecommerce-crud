@@ -1,14 +1,15 @@
 "use client";
 
 import { Dialog } from "@/components/ui/dialog";
-import { CreateProduct } from "@/components/view/create-product";
+import { UpdateProduct } from "@/components/view/update-product";
 import { usePathname, useRouter } from "next/navigation";
 
-export default function NewProductModal() {
+export function EditProductDialog() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const isDialogOpen = pathname.includes("admin/products/new");
+  const pathRegex = /products\/\d+\/edit/;
+  const isDialogOpen = pathRegex.test(pathname);
 
   const handleDialogOpenChange = (open: boolean) => {
     if (!open) router.push("/");
@@ -18,13 +19,14 @@ export default function NewProductModal() {
     <Dialog.Root open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
       <Dialog.Content>
         <Dialog.Header>
-          <Dialog.Title>New Product</Dialog.Title>
+          <Dialog.Title>Edit Product</Dialog.Title>
 
           <Dialog.Description>
-            Create a new product for your store.
+            Update the necessary fields for your product.
           </Dialog.Description>
         </Dialog.Header>
-        <CreateProduct />
+
+        <UpdateProduct />
       </Dialog.Content>
     </Dialog.Root>
   );

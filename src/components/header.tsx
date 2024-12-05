@@ -60,7 +60,7 @@ const userMenuItems: MenuItem[] = [
 ];
 
 const adminMenuItems: MenuItem[] = [
-  { label: "New Product", icon: <Plus />, href: "/admin/products/new" },
+  { label: "New Product", icon: <Plus />, href: "/products/new" },
 ];
 
 const HeaderMenu = () => {

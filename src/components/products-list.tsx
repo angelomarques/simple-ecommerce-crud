@@ -160,7 +160,7 @@ function ProductCard({
               <Link
                 className={buttonVariants({ variant: "secondary" })}
                 title="Edit Product"
-                href={`/admin/products/${id}/edit`}
+                href={`/products/${id}/edit`}
               >
                 <Pencil />
               </Link>
