@@ -28,7 +28,7 @@ export function Header() {
     <header className="w-full border-b border-b-slate-500">
       <div className="max-w-6xl mx-auto py-4 flex justify-between items-center">
         <Link href="/" className="flex-1">
-          <h1 className="text-3xl font-bold">Simple Store</h1>
+          <p className="text-3xl font-bold">Simple Store</p>
         </Link>
 
         <SearchInput onSearch={handleSearch} />
