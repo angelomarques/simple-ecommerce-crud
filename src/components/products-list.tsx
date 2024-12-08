@@ -7,7 +7,7 @@ import { useDeleteProductMutation } from "@/service/products/mutations";
 import { useProducts } from "@/service/products/queries";
 import { useProductsStore } from "@/store/products";
 import { UserViewType, useUserStore } from "@/store/user";
-import { Pencil, ShoppingCart, Trash } from "lucide-react";
+import { Info, Pencil, ShoppingCart, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { MouseEvent, useCallback, useRef, useState } from "react";
@@ -149,10 +149,18 @@ function ProductCard({
         </Card.Description>
       </Card.Header>
 
-      <Card.Footer className="flex justify-between items-center">
+      <Card.Footer className="block space-y-3">
         <p>{formatPrice(price)}</p>
 
         <div className="flex items-center gap-2">
+          <Link
+            className={buttonVariants({ variant: "secondary" })}
+            title="View Product Details"
+            href={`/products/${id}`}
+          >
+            <Info />
+          </Link>
+
           {userView === "admin" && (
             <>
               <DeleteProductDialog id={id} productTitle={title} />
