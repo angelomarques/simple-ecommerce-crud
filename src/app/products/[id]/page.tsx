@@ -1,7 +1,9 @@
+import { StarHalf } from "@/components/icons/star-half";
 import { Carousel } from "@/components/ui/carousel";
 import { formatPrice } from "@/lib/utils";
 import { getProductById } from "@/service/products";
 import { ProductType } from "@/service/products/types";
+import clsx from "clsx";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -75,16 +77,25 @@ interface StarRatingProps {
 }
 
 function StarRating({ rating }: StarRatingProps) {
+  const halfStarIndex = Math.floor(rating);
+
   return (
-    <div className="flex gap-1 mt-3">
+    <div className="flex gap-1 mt-3 items-center">
+      <p className="text-sm text-slate-300">{rating}</p>
       {Array(5)
         .fill(null)
-        .map((_, index) => (
-          <Star
-            key={index}
-            className="w-4 h-4 fill-yellow-500 text-yellow-500"
-          />
-        ))}
+        .map((_, index) =>
+          index === halfStarIndex ? (
+            <StarHalf key={index} className="w-4 h-4 text-yellow-500" />
+          ) : (
+            <Star
+              key={index}
+              className={clsx("w-4 h-4 text-yellow-500", {
+                "fill-yellow-500": index < halfStarIndex,
+              })}
+            />
+          )
+        )}
     </div>
   );
 }
