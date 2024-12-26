@@ -1,4 +1,6 @@
 import { StarHalf } from "@/components/icons/star-half";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
 import { formatPrice } from "@/lib/utils";
 import { getProductById } from "@/service/products";
@@ -30,7 +32,6 @@ interface ProductDetailsContentProps {
   product: ProductType;
 }
 
-// TODO: Let layout similar to amazon: image at the left, the info at the right
 function ProductDetailsContent({ product }: ProductDetailsContentProps) {
   const previousPrice = (1 + product.discountPercentage / 100) * product.price;
 
@@ -52,7 +53,7 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
           <Carousel.Next />
         </Carousel.Root>
 
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col">
           <h1 className="text-2xl font-bold">{product.title}</h1>
 
           <p className="mt-3 text-slate-300">{product.description}</p>
@@ -65,6 +66,19 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
             <p className="text-slate-400 ml-2">
               <s>{formatPrice(previousPrice)}</s>
             </p>
+          </div>
+
+          <Button className="mt-5">Add to cart</Button>
+
+          <div className="mt-auto flex gap-3 flex-wrap">
+            <Badge variant="destructive">
+              Minimum order of {product.minimumOrderQuantity}
+            </Badge>
+            <Badge variant="destructive">{`Only ${product.stock} in stock`}</Badge>
+            <Badge>Category: {product.category}</Badge>
+            <Badge>Brand: {product.brand}</Badge>
+            <Badge>{product.warrantyInformation}</Badge>
+            <Badge>{product.returnPolicy}</Badge>
           </div>
         </div>
       </div>
