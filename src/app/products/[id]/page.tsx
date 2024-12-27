@@ -2,7 +2,7 @@ import { StarHalf } from "@/components/icons/star-half";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { getProductById } from "@/service/products";
 import { ProductType } from "@/service/products/types";
 import clsx from "clsx";
@@ -58,10 +58,12 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
 
           <p className="mt-3 text-slate-300">{product.description}</p>
 
-          <StarRating rating={product.rating} />
+          <StarRating className="mt-3" rating={product.rating} />
 
           <div className="flex gap-0.5 items-end mt-5">
-            <p className="text-3xl ">{formatPrice(product.price)}</p>
+            <p className="text-3xl font-semibold">
+              {formatPrice(product.price)}
+            </p>
 
             <p className="text-slate-400 ml-2">
               <s>{formatPrice(previousPrice)}</s>
@@ -82,19 +84,37 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
           </div>
         </div>
       </div>
+
+      <h2 className="text-2xl mt-8 font-semibold">Customer Reviews</h2>
+
+      <Carousel.Root className="mt-4" slidesPerView={2}>
+        <Carousel.Content>
+          {product.reviews.map((item) => (
+            <Carousel.Item key={item.reviewerEmail}>
+              <div className="border border-slate-300 rounded-md p-3">
+                <StarRating className="justify-center" rating={item.rating} />
+              </div>
+            </Carousel.Item>
+          ))}
+        </Carousel.Content>
+
+        <Carousel.Previous />
+        <Carousel.Next />
+      </Carousel.Root>
     </main>
   );
 }
 
 interface StarRatingProps {
   rating: number;
+  className?: string;
 }
 
-function StarRating({ rating }: StarRatingProps) {
+function StarRating({ rating, className }: StarRatingProps) {
   const halfStarIndex = Math.floor(rating);
 
   return (
-    <div className="flex gap-1 mt-3 items-center">
+    <div className={cn("flex gap-1 items-center", className)}>
       <p className="text-sm text-slate-300">{rating}</p>
       {Array(5)
         .fill(null)
