@@ -111,7 +111,8 @@ interface StarRatingProps {
 }
 
 function StarRating({ rating, className }: StarRatingProps) {
-  const halfStarIndex = Math.floor(rating);
+  const halfStarIndex =
+    Math.floor(rating) === rating ? null : Math.floor(rating);
 
   return (
     <div className={cn("flex gap-1 items-center", className)}>
@@ -125,7 +126,7 @@ function StarRating({ rating, className }: StarRatingProps) {
             <Star
               key={index}
               className={clsx("w-4 h-4 text-yellow-500", {
-                "fill-yellow-500": index < halfStarIndex,
+                "fill-yellow-500": index < rating,
               })}
             />
           )
