@@ -9,7 +9,10 @@ export const CarouselItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const { orientation } = useCarousel();
+  const { orientation, slidesPerView } = useCarousel();
+
+  const flexBasisValue = (1 / slidesPerView) * 100;
+  const flexBasisClassName = `basis-[${flexBasisValue}%]`;
 
   return (
     <div
@@ -17,8 +20,9 @@ export const CarouselItem = React.forwardRef<
       role="group"
       aria-roledescription="slide"
       className={cn(
-        "min-w-0 shrink-0 grow-0 basis-full",
+        "min-w-0 shrink-0 grow-0",
         orientation === "horizontal" ? "pl-4" : "pt-4",
+        flexBasisClassName,
         className
       )}
       {...props}

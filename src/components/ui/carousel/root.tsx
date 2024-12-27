@@ -7,10 +7,11 @@ import { cn } from "@/lib/utils";
 import { CarouselApi, CarouselProps } from "./types";
 import { CarouselContext } from "./hooks";
 
-export const CarouselRoot = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & CarouselProps
->(
+interface Props extends React.HTMLAttributes<HTMLDivElement>, CarouselProps {
+  slidesPerView?: number;
+}
+
+export const CarouselRoot = React.forwardRef<HTMLDivElement, Props>(
   (
     {
       orientation = "horizontal",
@@ -19,6 +20,7 @@ export const CarouselRoot = React.forwardRef<
       plugins,
       className,
       children,
+      slidesPerView = 1,
       ...props
     },
     ref
@@ -97,6 +99,7 @@ export const CarouselRoot = React.forwardRef<
           scrollNext,
           canScrollPrev,
           canScrollNext,
+          slidesPerView,
         }}
       >
         <div
