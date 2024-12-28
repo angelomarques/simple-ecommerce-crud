@@ -36,7 +36,7 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
   const previousPrice = (1 + product.discountPercentage / 100) * product.price;
 
   return (
-    <main className="max-w-6xl mx-auto py-5 w-full flex-1">
+    <main className="max-w-7xl mx-auto py-5 w-full flex-1">
       <div className="flex gap-16 mt-12">
         <Carousel.Root className="w-3/5 mx-auto flex-[1.3]">
           <Carousel.Content>

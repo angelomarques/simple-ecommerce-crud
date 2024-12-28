@@ -27,7 +27,7 @@ export default async function UpdateProductPage({ params }: Props) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <main className="max-w-6xl mx-auto py-5 w-full flex-1 flex flex-col">
+      <main className="max-w-7xl mx-auto py-5 w-full flex-1 flex flex-col">
         <UpdateProduct />
       </main>
     </HydrationBoundary>

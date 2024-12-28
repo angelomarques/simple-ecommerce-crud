@@ -3,10 +3,10 @@
 import { Search } from "lucide-react";
 import { ChangeEventHandler, ComponentProps, useState } from "react";
 import { Input } from "./input";
-import { cn } from "@/lib/utils";
 
 interface Props extends ComponentProps<"input"> {
   onSearch: (query: string) => void;
+  classes?: { root?: string };
 }
 
 export const SearchInput = ({
@@ -34,7 +34,7 @@ export const SearchInput = ({
 
   return (
     <Input
-      className={cn("w-96", className)}
+      className={className}
       placeholder={placeholder}
       suffix={<Search />}
       onChange={handleChange}

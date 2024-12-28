@@ -26,12 +26,16 @@ export function Header() {
 
   return (
     <header className="w-full border-b border-b-slate-500">
-      <div className="max-w-6xl mx-auto py-4 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto py-4 flex justify-between items-center px-5">
         <Link href="/" className="flex-1">
-          <p className="text-3xl font-bold">Simple Store</p>
+          <p className="text-2xl sm:text-3xl font-bold">Simple Store</p>
         </Link>
 
-        <SearchInput onSearch={handleSearch} />
+        <SearchInput
+          onSearch={handleSearch}
+          className="w-96"
+          classes={{ root: "hidden lg:block" }}
+        />
 
         <div className="flex-1 flex items-center justify-end gap-3">
           <HeaderMenu />
@@ -43,6 +47,14 @@ export function Header() {
             </Avatar.Fallback>
           </Avatar.Root>
         </div>
+      </div>
+
+      <div className="px-4 pb-4">
+        <SearchInput
+          onSearch={handleSearch}
+          className="w-full"
+          classes={{ root: "lg:hidden w-full" }}
+        />
       </div>
     </header>
   );
