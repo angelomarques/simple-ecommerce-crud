@@ -58,7 +58,7 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
 
           <p className="mt-3 text-slate-300">{product.description}</p>
 
-          <StarRating className="mt-3" rating={product.rating} />
+          <StarRating showNumber className="mt-3" rating={product.rating} />
 
           <div className="flex gap-0.5 items-end mt-5">
             <p className="text-3xl font-semibold">
@@ -91,8 +91,17 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
         <Carousel.Content>
           {product.reviews.map((item) => (
             <Carousel.Item key={item.reviewerEmail}>
-              <div className="border border-slate-300 rounded-md p-3">
-                <StarRating className="justify-center" rating={item.rating} />
+              <div className="border border-slate-300 rounded-md p-3 text-center">
+                <h3 className="text-lg">{item.reviewerName}</h3>
+
+                <p className="text-slate-400 mt-2">{item.reviewerEmail}</p>
+
+                <StarRating
+                  className="justify-center mt-4"
+                  rating={item.rating}
+                />
+
+                <p className="mt-4">{item.comment}</p>
               </div>
             </Carousel.Item>
           ))}
@@ -108,15 +117,21 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
 interface StarRatingProps {
   rating: number;
   className?: string;
+  showNumber?: boolean;
 }
 
-function StarRating({ rating, className }: StarRatingProps) {
+function StarRating({
+  rating,
+  className,
+  showNumber = false,
+}: StarRatingProps) {
   const halfStarIndex =
     Math.floor(rating) === rating ? null : Math.floor(rating);
 
   return (
     <div className={cn("flex gap-1 items-center", className)}>
-      <p className="text-sm text-slate-300">{rating}</p>
+      {showNumber && <p className="text-sm text-slate-300">{rating}</p>}
+
       {Array(5)
         .fill(null)
         .map((_, index) =>
