@@ -42,7 +42,7 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
           <Carousel.Content>
             {product.images.map((image) => (
               <Carousel.Item key={image}>
-                <div className="bg-slate-900 rounded-2xl">
+                <div className="bg-slate-900 rounded-2xl h-[600px] w-[600px] flex items-center justify-center">
                   <Image src={image} alt="Product" width={600} height={600} />
                 </div>
               </Carousel.Item>
