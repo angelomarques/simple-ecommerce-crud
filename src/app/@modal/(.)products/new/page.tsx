@@ -24,6 +24,7 @@ export default function NewProductModal() {
             Create a new product for your store.
           </Dialog.Description>
         </Dialog.Header>
+
         <CreateProduct />
       </Dialog.Content>
     </Dialog.Root>
