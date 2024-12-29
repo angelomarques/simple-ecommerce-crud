@@ -4,7 +4,10 @@ import { LoadingSpinner } from "@/assets/loading-spinner";
 import { formatPrice } from "@/lib/utils";
 import { ProductSortBy } from "@/service/products/data";
 import { useDeleteProductMutation } from "@/service/products/mutations";
-import { useProducts } from "@/service/products/queries";
+import {
+  productsInfiniteQueryDefaultKey,
+  useProducts,
+} from "@/service/products/queries";
 import { useProductsStore } from "@/store/products";
 import { UserViewType, useUserStore } from "@/store/user";
 import { Info, Pencil, ShoppingCart, Trash } from "lucide-react";
@@ -16,6 +19,7 @@ import { Button, buttonVariants } from "./ui/button";
 import { Card } from "./ui/card";
 import { Select } from "./ui/select";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -198,10 +202,14 @@ const DeleteProductDialog = ({
   productTitle,
 }: DeleteProductDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   const { mutate: deleteProduct, isPending } = useDeleteProductMutation(id, {
     onSuccess: () => {
       toast.success("Product deleted successfully!");
+      queryClient.invalidateQueries({
+        queryKey: productsInfiniteQueryDefaultKey,
+      });
       setIsOpen(false);
     },
     onError: () => {

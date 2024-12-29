@@ -1,15 +1,17 @@
 "use client";
 
-import { Form } from "../ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { useCreateProductMutation } from "@/service/products/mutations";
+import { productsInfiniteQueryDefaultKey } from "@/service/products/queries";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { Button } from "../ui/button";
+import { Form } from "../ui/form";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -31,11 +33,15 @@ export const CreateProduct = () => {
     },
   });
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { mutate: createProduct, isPending } = useCreateProductMutation({
     onSuccess: () => {
       form.reset();
       toast.success("Product created successfully!");
+      queryClient.invalidateQueries({
+        queryKey: productsInfiniteQueryDefaultKey,
+      });
       router.push("/");
     },
     onError: () => {

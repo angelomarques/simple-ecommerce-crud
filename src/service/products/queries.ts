@@ -19,6 +19,11 @@ type UseProductParamsType = {
   search?: string;
 };
 
+export const productsInfiniteQueryDefaultKey = [
+  QueryKeys.PRODUCTS,
+  { sortBy: "none", search: undefined },
+];
+
 export function useProducts(
   params?: UseProductParamsType,
   queryOptions?: Omit<

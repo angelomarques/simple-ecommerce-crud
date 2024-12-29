@@ -1,6 +1,9 @@
 "use client";
 
-import { useProductsById } from "@/service/products/queries";
+import {
+  productsInfiniteQueryDefaultKey,
+  useProductsById,
+} from "@/service/products/queries";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -11,6 +14,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useUpdateProductMutation } from "@/service/products/mutations";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -25,6 +29,7 @@ const formSchema = z.object({
 export const UpdateProduct = () => {
   const { id } = useParams() as { id: string };
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { data: product, isLoading } = useProductsById(Number(id));
 
@@ -43,6 +48,9 @@ export const UpdateProduct = () => {
       onSuccess: () => {
         form.reset();
         toast.success("Product updated successfully!");
+        queryClient.invalidateQueries({
+          queryKey: productsInfiniteQueryDefaultKey,
+        });
         router.push("/");
       },
       onError: () => {
