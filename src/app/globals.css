@@ -120,4 +120,12 @@ body {
       transform: rotate(360deg);
     }
   }
+
+  .product-card-title {
+    min-height: calc(1em * 2); /* Reserve space for two lines */
+  }
+
+  .product-card-description {
+    min-height: calc(1.5em * 3); /* Reserve space for three lines */
+  }
 }

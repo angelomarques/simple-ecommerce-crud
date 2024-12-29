@@ -144,8 +144,8 @@ function ProductCard({
         </div>
 
         <Card.Header>
-          <Card.Title>{title}</Card.Title>
-          <Card.Description className="line-clamp-3">
+          <Card.Title className="product-card-title">{title}</Card.Title>
+          <Card.Description className="line-clamp-3 product-card-description">
             {description}
           </Card.Description>
         </Card.Header>
