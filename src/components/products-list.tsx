@@ -92,7 +92,7 @@ export function ProductsList() {
           <LoadingSpinner fill="white" size={48} />
         </div>
       ) : (
-        <div className="grid grid-cols-4 gap-5 mt-4 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-4 relative">
           {products?.pages.map((item) =>
             item.products.map((product) => (
               <ProductCard
@@ -139,49 +139,51 @@ function ProductCard({
   return (
     <Card.Root ref={ref}>
       <Card.Content>
-        <Image src={image} alt="Product" width={200} height={200} />
-      </Card.Content>
-
-      <Card.Header>
-        <Card.Title>{title}</Card.Title>
-        <Card.Description className="line-clamp-3">
-          {description}
-        </Card.Description>
-      </Card.Header>
-
-      <Card.Footer className="block space-y-3">
-        <p>{formatPrice(price)}</p>
-
-        <div className="flex items-center gap-2">
-          <Link
-            className={buttonVariants({ variant: "secondary" })}
-            title="View Product Details"
-            href={`/products/${id}`}
-          >
-            <Info />
-          </Link>
-
-          {userView === "admin" && (
-            <>
-              <DeleteProductDialog id={id} productTitle={title} />
-
-              <Link
-                className={buttonVariants({ variant: "secondary" })}
-                title="Edit Product"
-                href={`/products/${id}/edit`}
-              >
-                <Pencil />
-              </Link>
-            </>
-          )}
-
-          {userView === "customer" && (
-            <Button variant="secondary" title="Add to cart">
-              <ShoppingCart />
-            </Button>
-          )}
+        <div className="relative w-48 aspect-square sm:mt-4 mx-auto">
+          <Image src={image} alt="Product" fill />
         </div>
-      </Card.Footer>
+
+        <Card.Header>
+          <Card.Title>{title}</Card.Title>
+          <Card.Description className="line-clamp-3">
+            {description}
+          </Card.Description>
+        </Card.Header>
+
+        <Card.Footer className="block space-y-3">
+          <p>{formatPrice(price)}</p>
+
+          <div className="flex items-center gap-2">
+            <Link
+              className={buttonVariants({ variant: "secondary" })}
+              title="View Product Details"
+              href={`/products/${id}`}
+            >
+              <Info />
+            </Link>
+
+            {userView === "admin" && (
+              <>
+                <DeleteProductDialog id={id} productTitle={title} />
+
+                <Link
+                  className={buttonVariants({ variant: "secondary" })}
+                  title="Edit Product"
+                  href={`/products/${id}/edit`}
+                >
+                  <Pencil />
+                </Link>
+              </>
+            )}
+
+            {userView === "customer" && (
+              <Button variant="secondary" title="Add to cart">
+                <ShoppingCart />
+              </Button>
+            )}
+          </div>
+        </Card.Footer>
+      </Card.Content>
     </Card.Root>
   );
 }
