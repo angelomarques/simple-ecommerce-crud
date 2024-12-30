@@ -46,12 +46,12 @@ export const UpdateProduct = () => {
     Number(id),
     {
       onSuccess: () => {
-        form.reset();
         toast.success("Product updated successfully!");
         queryClient.invalidateQueries({
           queryKey: productsInfiniteQueryDefaultKey,
         });
         router.push("/");
+        form.reset((values) => values, { keepValues: true });
       },
       onError: () => {
         toast.error("An error occurred while updating the product.");
