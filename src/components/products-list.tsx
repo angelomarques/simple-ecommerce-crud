@@ -8,18 +8,19 @@ import {
   productsInfiniteQueryDefaultKey,
   useProducts,
 } from "@/service/products/queries";
+import { ProductType } from "@/service/products/types";
 import { useProductsStore } from "@/store/products";
-import { UserViewType, useUserStore } from "@/store/user";
-import { Info, Pencil, ShoppingCart, Trash } from "lucide-react";
+import { useUserStore } from "@/store/user";
+import { useQueryClient } from "@tanstack/react-query";
+import { Info, Pencil, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { MouseEvent, useCallback, useRef, useState } from "react";
+import { toast } from "sonner";
 import { AlertDialog } from "./ui/alert-dialog";
 import { Button, buttonVariants } from "./ui/button";
 import { Card } from "./ui/card";
 import { Select } from "./ui/select";
-import { toast } from "sonner";
-import { useQueryClient } from "@tanstack/react-query";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -35,7 +36,6 @@ export function ProductsList() {
   );
 
   const productsSearch = useProductsStore((state) => state.queries?.search);
-  const userView = useUserStore((state) => state.view);
 
   const {
     data: products,
@@ -101,13 +101,8 @@ export function ProductsList() {
             item.products.map((product) => (
               <ProductCard
                 key={product.id}
-                title={product.title}
-                description={product.description}
-                image={product.thumbnail}
-                price={product.price}
+                product={product}
                 ref={lastElementRef}
-                userView={userView}
-                id={product.id}
               />
             ))
           )}
@@ -122,29 +117,19 @@ export function ProductsList() {
 }
 
 interface ProductCardProps {
-  title: string;
-  description: string;
-  image: string;
-  price: number;
+  product: ProductType;
   ref: (node: HTMLDivElement) => void;
-  userView: UserViewType;
-  id: number;
 }
 
-function ProductCard({
-  title,
-  description,
-  image,
-  price,
-  ref,
-  userView,
-  id,
-}: ProductCardProps) {
+function ProductCard({ ref, product }: ProductCardProps) {
+  const { id, title, description, thumbnail, price } = product;
+  const userView = useUserStore((state) => state.view);
+
   return (
     <Card.Root ref={ref}>
       <Card.Content>
         <div className="relative w-48 aspect-square sm:mt-4 mx-auto">
-          <Image src={image} alt="Product" fill />
+          <Image src={thumbnail} alt="Product" fill />
         </div>
 
         <Card.Header>
@@ -181,9 +166,7 @@ function ProductCard({
             )}
 
             {userView === "customer" && (
-              <Button variant="secondary" title="Add to cart">
-                <ShoppingCart />
-              </Button>
+              <Button title="Add to cart">Add to card</Button>
             )}
           </div>
         </Card.Footer>
