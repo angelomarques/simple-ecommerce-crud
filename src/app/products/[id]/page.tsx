@@ -1,5 +1,5 @@
+import { ProductQuantity } from "@/components/product-quantity";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
 import { formatPrice } from "@/lib/utils";
 import { getProductById } from "@/service/products";
@@ -71,7 +71,7 @@ function ProductDetailsContent({ product }: ProductDetailsContentProps) {
             </p>
           </div>
 
-          <Button className="mt-5">Add to cart</Button>
+          <ProductQuantity product={product} className="mt-5" />
 
           <div className="flex gap-3 flex-wrap mt-5 lg:mt-auto">
             <Badge variant="destructive">

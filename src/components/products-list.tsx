@@ -12,16 +12,16 @@ import { ProductType } from "@/service/products/types";
 import { useProductsStore } from "@/store/products";
 import { useUserStore } from "@/store/user";
 import { useQueryClient } from "@tanstack/react-query";
-import { Info, Minus, Pencil, Plus, Trash } from "lucide-react";
+import { Info, Pencil, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { MouseEvent, useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
+import { ProductQuantity } from "./product-quantity";
 import { AlertDialog } from "./ui/alert-dialog";
 import { Button, buttonVariants } from "./ui/button";
 import { Card } from "./ui/card";
 import { Select } from "./ui/select";
-import { useCartStore } from "@/store/cart";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -166,58 +166,11 @@ function ProductCard({ ref, product }: ProductCardProps) {
               </>
             )}
 
-            {userView === "customer" && (
-              <ProductCardQuantity product={product} />
-            )}
+            {userView === "customer" && <ProductQuantity product={product} />}
           </div>
         </Card.Footer>
       </Card.Content>
     </Card.Root>
-  );
-}
-
-interface ProductCardQuantityProps {
-  product: ProductType;
-}
-
-function ProductCardQuantity({ product }: ProductCardQuantityProps) {
-  const { addProduct, products, changeProductQuantity } = useCartStore(
-    (state) => state
-  );
-
-  const productQuantity =
-    products.find((p) => p.data.id === product.id)?.quantity || 0;
-
-  if (productQuantity > 0) {
-    return (
-      <div className="flex items-center gap-2 border border-input rounded-md h-9 px-2">
-        <Button
-          title="Decrease quantity"
-          variant="ghost"
-          className="w-6 h-6"
-          onClick={() => changeProductQuantity(product.id, -1)}
-        >
-          {productQuantity > 1 ? <Minus /> : <Trash />}
-        </Button>
-
-        <span>{productQuantity}</span>
-
-        <Button
-          title="Increase quantity"
-          variant="ghost"
-          className="w-6 h-6"
-          onClick={() => changeProductQuantity(product.id, 1)}
-        >
-          <Plus />
-        </Button>
-      </div>
-    );
-  }
-
-  return (
-    <Button title="Add to cart" onClick={() => addProduct(product)}>
-      Add to card
-    </Button>
   );
 }
 
