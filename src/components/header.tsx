@@ -22,6 +22,11 @@ export function Header() {
   const setProductSearch = useProductsStore((state) => state.setQuerySearch);
   const cart = useCartStore((state) => state.products);
 
+  const totalProductsQuantity = cart.reduce(
+    (acc, product) => acc + product.quantity,
+    0
+  );
+
   const handleSearch = (query: string) => {
     setProductSearch(query);
   };
@@ -52,7 +57,7 @@ export function Header() {
               <ShoppingCart />
               <span className="sr-only">Cart</span>
               <span className="absolute -top-2 -right-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-danger-500 text-sm font-semibold text-white bg-red-500">
-                {cart.length}
+                {totalProductsQuantity}
               </span>
             </Link>
 

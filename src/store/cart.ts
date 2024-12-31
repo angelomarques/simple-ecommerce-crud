@@ -5,8 +5,8 @@ export type CartProductType = { data: ProductType; quantity: number };
 
 interface CartState {
   products: CartProductType[];
-  addProduct: (product: CartProductType) => void;
-  removeProduct: (productId: number) => void;
+  addProduct: (product: ProductType) => void;
+  changeProductQuantity: (productId: number, quantityChange: number) => void;
 }
 
 export const useCartStore = create<CartState>((set) => ({
@@ -14,9 +14,9 @@ export const useCartStore = create<CartState>((set) => ({
   addProduct: (product) =>
     set((state) => ({
       ...state,
-      products: [...state.products, product],
+      products: [...state.products, { data: product, quantity: 1 }],
     })),
-  removeProduct: (productId) =>
+  changeProductQuantity: (productId, quantityChange) =>
     set((state) => {
       const newProducts: CartProductType[] = [];
 
@@ -26,13 +26,15 @@ export const useCartStore = create<CartState>((set) => ({
           return;
         }
 
-        if (product.quantity === 1) {
+        const newQuantity = product.quantity + quantityChange;
+
+        if (newQuantity < 1) {
           return;
         }
 
         newProducts.push({
           data: product.data,
-          quantity: product.quantity - 1,
+          quantity: newQuantity,
         });
       });
 
