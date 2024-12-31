@@ -12,51 +12,70 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { Avatar } from "./ui/avatar";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { Dialog } from "./ui/dialog";
 import { DropdownMenu } from "./ui/dropdown-menu";
 import { SearchInput } from "./ui/search-input";
+import { useCartStore } from "@/store/cart";
 
 export function Header() {
   const setProductSearch = useProductsStore((state) => state.setQuerySearch);
+  const cart = useCartStore((state) => state.products);
 
   const handleSearch = (query: string) => {
     setProductSearch(query);
   };
 
   return (
-    <header className="w-full border-b border-b-slate-500">
-      <div className="max-w-7xl mx-auto py-4 flex justify-between items-center px-5">
-        <Link href="/" className="flex-1">
-          <p className="text-2xl sm:text-3xl font-bold">Simple Store</p>
-        </Link>
+    <div className="h-32 lg:h-24 w-full">
+      <header className="w-full border-b border-b-slate-500 fixed top-0 left-0 z-50 bg-background">
+        <div className="max-w-7xl mx-auto py-4 flex justify-between items-center px-5">
+          <Link href="/" className="flex-1">
+            <p className="text-2xl sm:text-3xl font-bold">Simple Store</p>
+          </Link>
 
-        <SearchInput
-          onSearch={handleSearch}
-          className="w-96"
-          classes={{ root: "hidden lg:block" }}
-        />
+          <SearchInput
+            onSearch={handleSearch}
+            className="w-96"
+            classes={{ root: "hidden lg:block" }}
+          />
 
-        <div className="flex-1 flex items-center justify-end gap-3">
-          <HeaderMenu />
+          <div className="flex-1 flex items-center justify-end gap-3">
+            <Link
+              className={buttonVariants({
+                variant: "outline",
+                className: "relative",
+              })}
+              href="/cart"
+              title="Cart"
+            >
+              <ShoppingCart />
+              <span className="sr-only">Cart</span>
+              <span className="absolute -top-2 -right-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-danger-500 text-sm font-semibold text-white bg-red-500">
+                {cart.length}
+              </span>
+            </Link>
 
-          <Avatar.Root>
-            <Avatar.Image src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80" />
-            <Avatar.Fallback>
-              <User />
-            </Avatar.Fallback>
-          </Avatar.Root>
+            <HeaderMenu />
+
+            <Avatar.Root>
+              <Avatar.Image src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80" />
+              <Avatar.Fallback>
+                <User />
+              </Avatar.Fallback>
+            </Avatar.Root>
+          </div>
         </div>
-      </div>
 
-      <div className="px-4 pb-4">
-        <SearchInput
-          onSearch={handleSearch}
-          className="w-full"
-          classes={{ root: "lg:hidden w-full" }}
-        />
-      </div>
-    </header>
+        <div className="px-4 pb-4">
+          <SearchInput
+            onSearch={handleSearch}
+            className="w-full"
+            classes={{ root: "lg:hidden w-full" }}
+          />
+        </div>
+      </header>
+    </div>
   );
 }
 

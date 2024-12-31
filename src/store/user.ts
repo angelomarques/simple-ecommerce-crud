@@ -8,7 +8,7 @@ interface UserState {
 }
 
 export const useUserStore = create<UserState>((set) => ({
-  view: "admin",
+  view: "customer",
   setView: (view) =>
     set((state) => ({
       ...state,
