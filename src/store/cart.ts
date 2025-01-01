@@ -1,3 +1,8 @@
+import {
+  getPersistentStorageItem,
+  setPersistentStorageItem,
+} from "@/service/persistent-storage";
+import { PersistentStorageKeys } from "@/service/persistent-storage/types";
 import { ProductType } from "@/service/products/types";
 import { create } from "zustand";
 
@@ -11,12 +16,21 @@ interface CartState {
 }
 
 export const useCartStore = create<CartState>((set) => ({
-  products: [],
+  products: getPersistentStorageItem(PersistentStorageKeys.CART_PRODUCTS) || [],
   addProduct: (product) =>
-    set((state) => ({
-      ...state,
-      products: [...state.products, { data: product, quantity: 1 }],
-    })),
+    set((state) => {
+      const newProducts = [...state.products, { data: product, quantity: 1 }];
+
+      setPersistentStorageItem(
+        PersistentStorageKeys.CART_PRODUCTS,
+        newProducts
+      );
+
+      return {
+        ...state,
+        products: newProducts,
+      };
+    }),
   changeProductQuantity: (productId, quantityChange) =>
     set((state) => {
       const newProducts: CartProductType[] = [];
@@ -39,14 +53,23 @@ export const useCartStore = create<CartState>((set) => ({
         });
       });
 
+      setPersistentStorageItem(
+        PersistentStorageKeys.CART_PRODUCTS,
+        newProducts
+      );
+
       return {
         ...state,
         products: newProducts,
       };
     }),
   emptyCart: () =>
-    set((state) => ({
-      ...state,
-      products: [],
-    })),
+    set((state) => {
+      setPersistentStorageItem(PersistentStorageKeys.CART_PRODUCTS, []);
+
+      return {
+        ...state,
+        products: [],
+      };
+    }),
 }));
