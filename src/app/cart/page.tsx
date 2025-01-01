@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
-  const { products } = useCartStore((state) => state);
+  const { products, emptyCart } = useCartStore((state) => state);
+  const router = useRouter();
 
   const totalProductsQuantity = products.reduce(
     (acc, product) => acc + product.quantity,
@@ -17,6 +19,11 @@ export default function CartPage() {
     (acc, product) => acc + product.quantity * product.data.price,
     0
   );
+
+  function checkout() {
+    emptyCart();
+    router.push("/success");
+  }
 
   return (
     <main className="max-w-7xl mx-auto p-5 w-full flex-1">
@@ -57,7 +64,8 @@ export default function CartPage() {
             <p>
               Total ({totalProductsQuantity}): {formatPrice(totalProductsPrice)}
             </p>
-            <Button>Checkout</Button>
+
+            <Button onClick={checkout}>Checkout</Button>
           </div>
         </div>
       ) : (

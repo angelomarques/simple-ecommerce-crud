@@ -7,6 +7,7 @@ interface CartState {
   products: CartProductType[];
   addProduct: (product: ProductType) => void;
   changeProductQuantity: (productId: number, quantityChange: number) => void;
+  emptyCart: () => void;
 }
 
 export const useCartStore = create<CartState>((set) => ({
@@ -43,4 +44,9 @@ export const useCartStore = create<CartState>((set) => ({
         products: newProducts,
       };
     }),
+  emptyCart: () =>
+    set((state) => ({
+      ...state,
+      products: [],
+    })),
 }));
