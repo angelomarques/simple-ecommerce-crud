@@ -68,6 +68,26 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      animation: {
+        "add-to-cart": "add-to-cart 1.5s ease-in-out",
+      },
+      keyframes: {
+        // For this animation to work, you need to pass the css variables to the element. E.g.: style={{ "--pos-x": "500px", "--pos-y": "100px" } as CSSProperties}
+        "add-to-cart": {
+          "0%": {
+            transform: "scale(0) translate(0, 0)",
+          },
+          "5%": {
+            transform: "scale(1) translate(0, 0)",
+          },
+          "95%": {
+            transform: "translate(var(--pos-x), var(--pos-y))scale(1) ",
+          },
+          "100%": {
+            transform: "translate(var(--pos-x), var(--pos-y))scale(0)",
+          },
+        },
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
