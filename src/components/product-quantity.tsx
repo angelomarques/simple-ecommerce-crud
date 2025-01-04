@@ -9,9 +9,14 @@ import { cn } from "@/lib/utils";
 interface Props {
   product: ProductType;
   className?: string;
+  onAddToCart?: () => void;
 }
 
-export function ProductQuantity({ product, className = "" }: Props) {
+export function ProductQuantity({
+  product,
+  className = "",
+  onAddToCart,
+}: Props) {
   const { addProduct, products, changeProductQuantity } = useCartStore(
     (state) => state
   );
@@ -50,12 +55,16 @@ export function ProductQuantity({ product, className = "" }: Props) {
     );
   }
 
+  function addToCart() {
+    addProduct(product);
+
+    if (onAddToCart) {
+      onAddToCart();
+    }
+  }
+
   return (
-    <Button
-      title="Add to cart"
-      className={className}
-      onClick={() => addProduct(product)}
-    >
+    <Button title="Add to cart" className={className} onClick={addToCart}>
       Add to card
     </Button>
   );

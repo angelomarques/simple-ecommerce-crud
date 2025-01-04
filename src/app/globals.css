@@ -129,3 +129,13 @@ body {
     min-height: calc(1.5em * 3); /* Reserve space for three lines */
   }
 }
+
+@layer utilities {
+  .absolute-centered-x {
+    @apply left-1/2 -translate-x-1/2;
+  }
+
+  .absolute-centered-y {
+    @apply top-1/2 -translate-y-1/2;
+  }
+}

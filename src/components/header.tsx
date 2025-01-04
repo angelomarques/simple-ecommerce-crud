@@ -53,6 +53,7 @@ export function Header() {
               })}
               href="/cart"
               title="Cart"
+              id="cart-link"
             >
               <ShoppingCart />
               <span className="sr-only">Cart</span>

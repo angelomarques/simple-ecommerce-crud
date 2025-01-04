@@ -22,6 +22,7 @@ import { AlertDialog } from "./ui/alert-dialog";
 import { Button, buttonVariants } from "./ui/button";
 import { Card } from "./ui/card";
 import { Select } from "./ui/select";
+import { useAddToCartAnimation } from "@/hooks/use-add-to-cart-animation";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -126,11 +127,19 @@ function ProductCard({ ref, product }: ProductCardProps) {
   const { id, title, description, thumbnail, price } = product;
   const userView = useUserStore((state) => state.view);
 
+  const { elementToAnimate, animate } = useAddToCartAnimation();
+
   return (
     <Card.Root ref={ref}>
       <Card.Content>
         <div className="relative w-48 aspect-square sm:mt-4 mx-auto">
           <Image src={thumbnail} alt="Product" fill sizes="10vw" />
+          <div
+            className="absolute z-50 w-12 h-12 absolute-centered-x absolute-centered-y"
+            ref={elementToAnimate}
+          >
+            <Image src={thumbnail} alt="Product" fill sizes="5vw" />
+          </div>
         </div>
 
         <Card.Header>
@@ -166,7 +175,9 @@ function ProductCard({ ref, product }: ProductCardProps) {
               </>
             )}
 
-            {userView === "customer" && <ProductQuantity product={product} />}
+            {userView === "customer" && (
+              <ProductQuantity product={product} onAddToCart={animate} />
+            )}
           </div>
         </Card.Footer>
       </Card.Content>
