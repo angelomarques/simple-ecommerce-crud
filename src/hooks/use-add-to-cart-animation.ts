@@ -44,11 +44,7 @@ export function useAddToCartAnimation() {
 
     setTimeout(() => {
       setIsAnimating(false);
-
-      if (elementToAnimateRef.current) {
-        elementToAnimateRef.current.remove();
-      }
-    }, CART_ANIMATION_DURATION_MS + 100);
+    }, CART_ANIMATION_DURATION_MS + 200);
   }
 
   return {
