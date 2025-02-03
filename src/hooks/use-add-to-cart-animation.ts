@@ -1,7 +1,16 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+
+const CART_ANIMATION_CLASSES = ["animate-add-to-cart", "fill-mode-forwards"];
+const CART_ANIMATION_DURATION_MS = 1500;
 
 export function useAddToCartAnimation() {
   const elementToAnimateRef = useRef<HTMLDivElement>(null);
+
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const elementClasses = isAnimating
+    ? CART_ANIMATION_CLASSES.join(" ")
+    : "opacity-0";
 
   function animate() {
     if (!elementToAnimateRef.current || !document) return;
@@ -13,10 +22,8 @@ export function useAddToCartAnimation() {
     if (!cartLinkButton) return;
 
     const cartLinkButtonRect = cartLinkButton.getBoundingClientRect();
-    const cartLinkButtonPositionX =
-      cartLinkButtonRect.left + cartLinkButtonRect.width / 2;
-    const cartLinkButtonPositionY =
-      cartLinkButtonRect.top + cartLinkButtonRect.height / 2;
+    const cartLinkButtonCenterPositionX = cartLinkButtonRect.left;
+    const cartLinkButtonCenterPositionY = cartLinkButtonRect.top;
 
     const elementToAnimateRect =
       elementToAnimateRef.current.getBoundingClientRect();
@@ -25,20 +32,28 @@ export function useAddToCartAnimation() {
     const elementToAnimatePositionY =
       elementToAnimateRect.top + elementToAnimateRect.height / 2;
 
-    const translateX = cartLinkButtonPositionX - elementToAnimatePositionX;
-    const translateY = cartLinkButtonPositionY - elementToAnimatePositionY;
+    const translateX =
+      cartLinkButtonCenterPositionX - elementToAnimatePositionX;
+    const translateY =
+      cartLinkButtonCenterPositionY - elementToAnimatePositionY;
 
     elementToAnimateRef.current.style.setProperty("--pos-x", `${translateX}px`);
     elementToAnimateRef.current.style.setProperty("--pos-y", `${translateY}px`);
 
-    elementToAnimateRef.current.classList.add(
-      "animate-add-to-cart",
-      "fill-mode-forwards"
-    );
+    setIsAnimating(true);
+
+    setTimeout(() => {
+      setIsAnimating(false);
+
+      if (elementToAnimateRef.current) {
+        elementToAnimateRef.current.remove();
+      }
+    }, CART_ANIMATION_DURATION_MS + 100);
   }
 
   return {
     elementToAnimate: elementToAnimateRef,
     animate,
+    elementClasses,
   };
 }

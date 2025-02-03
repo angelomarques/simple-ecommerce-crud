@@ -1,7 +1,7 @@
 "use client";
 
 import { LoadingSpinner } from "@/assets/loading-spinner";
-import { formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { ProductSortBy } from "@/service/products/data";
 import { useDeleteProductMutation } from "@/service/products/mutations";
 import {
@@ -127,7 +127,7 @@ function ProductCard({ ref, product }: ProductCardProps) {
   const { id, title, description, thumbnail, price } = product;
   const userView = useUserStore((state) => state.view);
 
-  const { elementToAnimate, animate } = useAddToCartAnimation();
+  const { elementToAnimate, elementClasses, animate } = useAddToCartAnimation();
 
   return (
     <Card.Root ref={ref}>
@@ -135,7 +135,10 @@ function ProductCard({ ref, product }: ProductCardProps) {
         <div className="relative w-48 aspect-square sm:mt-4 mx-auto">
           <Image src={thumbnail} alt="Product" fill sizes="10vw" />
           <div
-            className="absolute z-50 w-12 h-12 absolute-centered-x absolute-centered-y"
+            className={cn(
+              "absolute z-50 w-12 h-12 absolute-centered-x absolute-centered-y pointer-events-none",
+              elementClasses
+            )}
             ref={elementToAnimate}
           >
             <Image src={thumbnail} alt="Product" fill sizes="5vw" />
