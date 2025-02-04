@@ -3,14 +3,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
-import { CreateProduct } from "./create-product";
+import { CreateProduct } from ".";
 
 jest.mock("@/service/products/mutations");
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
 jest.mock("@tanstack/react-query", () => ({
+  ...jest.requireActual("@tanstack/react-query"),
   useQueryClient: jest.fn(),
+  useMutation: jest.fn(),
 }));
 jest.mock("sonner", () => ({
   toast: {
@@ -71,59 +73,28 @@ describe("CreateProduct", () => {
     });
   });
 
-  // it("shows success toast and navigates on successful creation", async () => {
-  //   (useCreateProductMutation as jest.Mock).mockReturnValue({
-  //     mutate: () => {},
-  //     isPending: false,
-  //   });
+  it("it successfully submits the form", async () => {
+    render(<CreateProduct />);
 
-  //   render(<CreateProduct />);
+    fireEvent.change(screen.getByLabelText(/title/i), {
+      target: { value: "Test Product" },
+    });
+    fireEvent.change(screen.getByLabelText(/description/i), {
+      target: { value: "Test Description" },
+    });
+    fireEvent.change(screen.getByLabelText(/price/i), {
+      target: { value: "10" },
+    });
 
-  //   fireEvent.change(screen.getByLabelText(/title/i), {
-  //     target: { value: "Test Product" },
-  //   });
-  //   fireEvent.change(screen.getByLabelText(/description/i), {
-  //     target: { value: "Test Description" },
-  //   });
-  //   fireEvent.change(screen.getByLabelText(/price/i), {
-  //     target: { value: "10" },
-  //   });
+    fireEvent.click(screen.getByRole("button", { name: /create/i }));
 
-  //   fireEvent.click(screen.getByRole("button", { name: /create/i }));
-
-  //   await waitFor(() => {
-  //     expect(toast.success).toHaveBeenCalledWith(
-  //       "Product created successfully!"
-  //     );
-  //     expect(mockInvalidateQueries).toHaveBeenCalled();
-  //     expect(mockPush).toHaveBeenCalledWith("/");
-  //   });
-  // });
-
-  // it("shows error toast on creation failure", async () => {
-  //   (useCreateProductMutation as jest.Mock).mockReturnValue({
-  //     mutate: (values: any, { onError }: any) => onError(),
-  //     isPending: false,
-  //   });
-
-  //   render(<CreateProduct />);
-
-  //   fireEvent.change(screen.getByLabelText(/title/i), {
-  //     target: { value: "Test Product" },
-  //   });
-  //   fireEvent.change(screen.getByLabelText(/description/i), {
-  //     target: { value: "Test Description" },
-  //   });
-  //   fireEvent.change(screen.getByLabelText(/price/i), {
-  //     target: { value: "10" },
-  //   });
-
-  //   fireEvent.click(screen.getByRole("button", { name: /create/i }));
-
-  //   await waitFor(() => {
-  //     expect(toast.error).toHaveBeenCalledWith(
-  //       "An error occurred while creating the product."
-  //     );
-  //   });
-  // });
+    await waitFor(() => {
+      expect(mockCreateProduct).toHaveBeenCalled();
+      expect(mockCreateProduct).toHaveBeenCalledWith({
+        title: "Test Product",
+        description: "Test Description",
+        price: 10,
+      });
+    });
+  });
 });
