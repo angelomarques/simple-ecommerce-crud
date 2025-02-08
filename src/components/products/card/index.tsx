@@ -1,19 +1,19 @@
 import { useAddToCartAnimation } from "@/hooks/use-add-to-cart-animation";
 import { ProductType } from "@/service/products/types";
 import { useUserStore } from "@/store/user";
-import { Card } from "../ui/card";
+import { Card } from "../../ui/card";
 import Image from "next/image";
 import { cn, formatPrice } from "@/lib/utils";
 import Link from "next/link";
-import { Button, buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../../ui/button";
 import { Info, Pencil, Trash } from "lucide-react";
-import { ProductQuantity } from "../product-quantity";
+import { ProductQuantity } from "../../product-quantity";
 import { MouseEvent, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteProductMutation } from "@/service/products/mutations";
 import { toast } from "sonner";
 import { productsInfiniteQueryDefaultKey } from "@/service/products/queries";
-import { AlertDialog } from "../ui/alert-dialog";
+import { AlertDialog } from "../../ui/alert-dialog";
 
 interface Props {
   product: ProductType;
@@ -125,6 +125,7 @@ const DeleteProductDialog = ({
       <AlertDialog.Trigger asChild>
         <Button variant="secondary">
           <Trash />
+          <span className="sr-only">Delete</span>
         </Button>
       </AlertDialog.Trigger>
 
@@ -144,7 +145,7 @@ const DeleteProductDialog = ({
               onClick={handleConfirmClick}
               isLoading={isPending}
             >
-              Delete
+              Confirm
             </Button>
           </AlertDialog.Action>
         </AlertDialog.Footer>
