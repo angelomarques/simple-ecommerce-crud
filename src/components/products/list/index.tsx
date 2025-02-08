@@ -5,8 +5,8 @@ import { ProductSortBy } from "@/service/products/data";
 import { useProducts } from "@/service/products/queries";
 import { useProductsStore } from "@/store/products";
 import { useCallback, useRef, useState } from "react";
-import { Select } from "../ui/select";
-import { ProductCard } from "./card";
+import { Select } from "../../ui/select";
+import { ProductCard } from "../card";
 
 const sortByOptions = [
   { value: ProductSortBy.TITLE_ASC, label: "Title (A -> Z)" },
@@ -78,7 +78,7 @@ export function ProductsList() {
       </div>
 
       {isQueryLoading ? (
-        <div className="flex justify-center items-center flex-1">
+        <div role="status" className="flex justify-center items-center flex-1">
           <LoadingSpinner fill="white" size={48} />
         </div>
       ) : (
