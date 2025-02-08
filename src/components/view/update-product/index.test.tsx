@@ -1,7 +1,6 @@
 import { useUpdateProductMutation } from "@/service/products/mutations";
 import { useProductsById } from "@/service/products/queries";
 import { useQueryClient } from "@tanstack/react-query";
-import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useParams, useRouter } from "next/navigation";
 import { UpdateProduct } from ".";
