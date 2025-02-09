@@ -98,8 +98,8 @@ type MenuItem = {
 };
 
 const userMenuItems: MenuItem[] = [
-  { label: "My Cart", icon: <ShoppingCart /> },
-  { label: "Profile", icon: <User /> },
+  { label: "My Cart", icon: <ShoppingCart />, href: "/cart" },
+  { label: "Profile", icon: <User />, href: "/profile" },
 ];
 
 const adminMenuItems: MenuItem[] = [
