@@ -17,10 +17,14 @@ import { Dialog } from "./ui/dialog";
 import { DropdownMenu } from "./ui/dropdown-menu";
 import { SearchInput } from "./ui/search-input";
 import { useCartStore } from "@/store/cart";
+import { usePathname } from "next/navigation";
 
 export function Header() {
   const setProductSearch = useProductsStore((state) => state.setQuerySearch);
   const cart = useCartStore((state) => state.products);
+  const pathname = usePathname();
+
+  const showSearchBar = pathname === "/";
 
   const totalProductsQuantity = cart.reduce(
     (acc, product) => acc + product.quantity,
@@ -39,11 +43,13 @@ export function Header() {
             <p className="text-2xl sm:text-3xl font-bold">Simple Store</p>
           </Link>
 
-          <SearchInput
-            onSearch={handleSearch}
-            className="w-96"
-            classes={{ root: "hidden lg:block" }}
-          />
+          {showSearchBar && (
+            <SearchInput
+              onSearch={handleSearch}
+              className="w-96"
+              classes={{ root: "hidden lg:block" }}
+            />
+          )}
 
           <div className="flex-1 flex items-center justify-end gap-3">
             <Link
