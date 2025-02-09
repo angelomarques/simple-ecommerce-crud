@@ -27,7 +27,7 @@ export function ProductCard({ ref, product }: Props) {
   const { elementToAnimate, elementClasses, animate } = useAddToCartAnimation();
 
   return (
-    <Card.Root ref={ref}>
+    <Card.Root ref={ref} data-testid={`product-${id}`}>
       <Card.Content>
         <div className="relative w-48 aspect-square sm:mt-4 mx-auto">
           <Image src={thumbnail} alt="Product" fill sizes="10vw" />
