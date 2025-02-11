@@ -1,16 +1,11 @@
 import { useRef, useState } from "react";
 
-const CART_ANIMATION_CLASSES = ["animate-add-to-cart", "fill-mode-forwards"];
 const CART_ANIMATION_DURATION_MS = 1500;
 
 export function useAddToCartAnimation() {
   const elementToAnimateRef = useRef<HTMLDivElement>(null);
 
   const [isAnimating, setIsAnimating] = useState(false);
-
-  const elementClasses = isAnimating
-    ? CART_ANIMATION_CLASSES.join(" ")
-    : "opacity-0";
 
   function animate() {
     if (!elementToAnimateRef.current || !document) return;
@@ -50,6 +45,6 @@ export function useAddToCartAnimation() {
   return {
     elementToAnimate: elementToAnimateRef,
     animate,
-    elementClasses,
+    isAnimating,
   };
 }

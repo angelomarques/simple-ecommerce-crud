@@ -24,7 +24,7 @@ export function ProductCard({ ref, product }: Props) {
   const { id, title, description, thumbnail, price } = product;
   const userView = useUserStore((state) => state.view);
 
-  const { elementToAnimate, elementClasses, animate } = useAddToCartAnimation();
+  const { elementToAnimate, animate, isAnimating } = useAddToCartAnimation();
 
   return (
     <Card.Root ref={ref} data-testid={`product-${id}`}>
@@ -34,7 +34,10 @@ export function ProductCard({ ref, product }: Props) {
           <div
             className={cn(
               "absolute z-50 w-12 h-12 absolute-centered-x absolute-centered-y pointer-events-none",
-              elementClasses
+              {
+                "animate-add-to-cart fill-mode-forwards": isAnimating,
+                "opacity-0": !isAnimating,
+              }
             )}
             ref={elementToAnimate}
           >
