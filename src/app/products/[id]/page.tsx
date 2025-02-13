@@ -8,9 +8,31 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CustomerReviews } from "./customer-reviews";
 import { StarRating } from "./star-rating";
+import { Metadata } from "next";
 
 interface Props {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+
+  const product = await getProductById(Number(id));
+
+  if (!product)
+    return {
+      title: "Product not found",
+    };
+
+  return {
+    title: `${product.title} | Simple Store`,
+    description: product.description,
+    openGraph: {
+      images: [product.thumbnail],
+      description: product.description,
+      title: `${product.title} | Simple Store`,
+    },
+  };
 }
 
 export default async function ProductDetailsPage({ params }: Props) {
