@@ -10,6 +10,23 @@
 
 This project is a **Simple E-Commerce Application** built using **Next.js**, designed to showcase my skills in modern web development. The application demonstrates my ability to create a fully functional, responsive, and performant web application with features like **dynamic routing**, **CRUD operations**, and **state management**.
 
+## Built with
+
+- Next.js
+- React Query
+- React.js
+- Tailwind CSS
+- Shadcn UI
+- Zustand
+
+## Features
+
+- Server Side Rendering (SSR)
+- Intercepting Routes
+- Global State Management (Cart)
+- Clean API integration with React Query hooks
+- Infinite Loading on Products List
+
 ## Getting Started
 
 First, run the development server:
