@@ -2,22 +2,24 @@
 
 ## About the project
 
-<!-- <a href="https://github.com/calcom/cal.com">
-   <img src="./docs/presentation.gif" alt="Presentation">
-  </a> -->
+<a href="https://simple-ecommerce-crud.vercel.app">
+  <div style="text-align: center;">
+    <img src="./docs/presentation.gif" alt="Presentation" style="width: 800px;">
+  </div>
+</a>
 
-<!-- ![Demo of the e-commerce app](https://example.com/path/to/your-gif.gif) -->
-
-This project is a **Simple E-Commerce Application** built using **Next.js**, designed to showcase my skills in modern web development. The application demonstrates my ability to create a fully functional, responsive, and performant web application with features like **dynamic routing**, **CRUD operations**, and **state management**.
+This project is a [**Simple E-Commerce Application**](https://simple-ecommerce-crud.vercel.app) that includes essential features such as a shopping cart and CRUD (Create, Read, Update, Delete) operations for managing products. Users can browse through a list of products, add items to their cart, and proceed to checkout. The application also allows administrators to manage the product inventory efficiently.
 
 ## Built with
 
-- Next.js
-- React Query
-- React.js
-- Tailwind CSS
-- Shadcn UI
-- Zustand
+- [Next.js](https://nextjs.org/)
+- [React Query](https://tanstack.com/query/latest)
+- [React.js](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Shadcn UI](https://ui.shadcn.com/)
+- [Zustand](https://github.com/pmndrs/zustand)
+- [React Hook Form](https://www.react-hook-form.com/)
+- [Zod](https://zod.dev/)
 
 ## Features
 
