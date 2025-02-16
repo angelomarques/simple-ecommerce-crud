@@ -36,6 +36,8 @@ Server-Side Rendering (SSR) in Next.js generates some of the HTML on the server 
 In the Product Details Page, the API Request to fetch the product data is made on the server, then it sends the rendered html with the content to the client-side:
 
 ```tsx
+// @/app/products/[id]/page.tsx
+
 /*
 - This is a React Server Component, if the product is found, the html is rendered. Otherwise, the notFound page is returned.
 */
@@ -81,7 +83,10 @@ The shopping cart state is managed globally to ensure that the cart's contents a
 Here is how the Cart Store is structured:
 
 ```tsx
+// @/store/cart.ts
+
 // ...
+
 import { create } from "zustand";
 
 interface CartState {
@@ -106,7 +111,9 @@ export const useCartStore = create<CartState>((set) => ({
 And to manage the state in our application, We can use the `useCartStore` hook:
 
 ```tsx
-const { addProduct, products } = useCartStore((state) => state);
+// @/app/cart/content.tsx
+
+const { products, emptyCart } = useCartStore((state) => state);
 ```
 
 ## Clean API integration with React Query hooks
@@ -118,6 +125,8 @@ React Query is a powerful library for managing server-state in React application
 The `useQuery` hook is used to handle data fetching and caching from API Requests:
 
 ```ts
+// @/service/products/queries.ts
+
 /*
 - Custom Hook that wraps the useQuery and manages the product data efficiently.
 */
@@ -319,3 +328,10 @@ bun dev
 5. **Open the application:**
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Contact
+
+If you have any questions or feedback, feel free to reach out:
+
+- **X / Twitter:** [@angelomarquesc](https://x.com/angelomarquesc)
+- **Email:** [angeloemanuelmarques@gmail.com](mailto:angeloemanuelmarques@gmail.com)
