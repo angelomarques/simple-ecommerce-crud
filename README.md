@@ -2,9 +2,11 @@
 
 ## About the project
 
-<div style="text-align: center;">
-  <img src="./docs/presentation.gif" alt="Presentation" style="width: 800px;">
-</div>
+<p align="center">
+  <a href="https://simple-ecommerce-crud.vercel.app">
+   <img src="./docs/presentation.gif" alt="Presentation" width="800px">
+  </a>
+</p>
 
 This project is a [**Simple E-Commerce Application**](https://simple-ecommerce-crud.vercel.app) that includes essential features such as a shopping cart and CRUD (Create, Read, Update, Delete) operations for managing products. Users can browse through a list of products, add items to their cart, and proceed to checkout. The application also allows administrators to manage the product inventory efficiently.
 
@@ -60,14 +62,14 @@ Next.js Intercepting Routes is a powerful feature that allows you to load a rout
 
 For example, in this project, clicking on the edit product button will open a form modal instead of redirecting to a new page, while still updating the URL:
 
-<div style="text-align: center;">
-  <img src="./docs/intercepting-route-modal.png" alt="Intercepting Routes - Modal" style="width: 800px;">
-</div>
+<p align="center">
+  <img src="./docs/intercepting-route-modal.png" alt="Intercepting Routes - Modal" width="800px">
+</p>
 
 However, if you refresh or navigate directly to the specified route, it will return the expected full page:
 
-<div style="text-align: center;">
-  <img src="./docs/intercepting-route-page.png" alt="Intercepting Routes - Page" style="width: 800px;">
+<p align="center">
+  <img src="./docs/intercepting-route-page.png" alt="Intercepting Routes - Page" width="800px">
 </div>
 
 ## Global State Management (Cart)
@@ -218,9 +220,9 @@ Infinite loading is a design pattern used in web applications where additional c
 
 On the Home Page of the application, infinite loading is used for the Products List
 
-<div style="text-align: center;">
-  <img src="./docs/infinite-loading.gif" alt="Infinite Loading" style="width: 800px;">
-</div>
+<p align="center">
+  <img src="./docs/infinite-loading.gif" alt="Infinite Loading" width="800px">
+</p>
 
 And this feature is implemented with the `useInfiniteQuery` React Query Hook and with the Intersection Observer API
 
