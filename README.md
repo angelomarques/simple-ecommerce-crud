@@ -279,7 +279,32 @@ export function ProductsList() {
 
 ## Installation
 
-First, run the development server:
+To get started with this project, follow these steps:
+
+1. **Clone the repository:**
+
+```bash
+git clone https://github.com/angelomarques/simple-ecommerce-crud.git
+cd simple-ecommerce-crud
+```
+
+2. **Install dependencies:**
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+3. **Set up environment variables:**
+
+Create a `.env.local` file in the root directory and add the necessary environment variables. Refer to `.env.example` for the required variables.
+
+4. **Run the development server:**
 
 ```bash
 npm run dev
@@ -290,5 +315,7 @@ pnpm dev
 # or
 bun dev
 ```
+
+5. **Open the application:**
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
