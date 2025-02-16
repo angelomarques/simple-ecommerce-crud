@@ -175,10 +175,7 @@ The `useMutation` hook is used to handle API Requests that modify server data:
 */
 export const useUpdateProductMutation = (
   id: number,
-  mutationOptions: Omit<
-    MutationOptions<ProductType, AxiosError<string>, CreateProductPayloadType>,
-    "mutationFn"
-  >
+  mutationOptions: // ...
 ) => {
   return useMutation<ProductType, AxiosError<string>, CreateProductPayloadType>(
     {
@@ -210,7 +207,77 @@ const { mutate: updateProduct, isPending } = useUpdateProductMutation(
 
 ## Infinite Loading on Products List
 
-## Getting Started
+Infinite loading is a design pattern used in web applications where additional content is loaded automatically as the user scrolls down the page. This creates a seamless experience by continuously fetching and displaying more data without requiring the user to manually navigate to the next page.
+
+On the Home Page of the application, infinite loading is used for the Products List
+
+<div style="text-align: center;">
+  <img src="./docs/infinite-loading.gif" alt="Infinite Loading" style="width: 800px;">
+</div>
+
+And this feature is implemented with the `useInfiniteQuery` React Query Hook and with the Intersection Observer API
+
+```tsx
+// @/service/products/queries.ts
+
+/*
+- Custom Hook that wraps the useInfiniteQuery and manages the data coming from the product list API endpoint.
+*/
+export function useProducts(
+  params?: UseProductParamsType,
+  queryOptions?: // ...
+) {
+  return useInfiniteQuery({
+    queryFn: async ({ pageParam = 1 }) => {
+      // ...
+    },
+    // ...
+    ...queryOptions,
+  });
+}
+
+// @/components/products/list/index.tsx
+
+export function ProductsList() {
+  // ...
+
+  const {
+    data: products,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    isFetching,
+    isLoading: isQueryLoading,
+  } = useProducts({ sortBy: selectedSortBy, search: productsSearch });
+  const observer = useRef<IntersectionObserver>();
+  const isLoading = isFetchingNextPage || isFetching;
+
+  /*
+  - The IntersectionObserver observes for when the last Product Item Element intersects the viewport, then the `fetchNextPage` function is called
+  */
+  const lastElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (isLoading) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetching) {
+          fetchNextPage();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [fetchNextPage, hasNextPage, isFetching, isLoading]
+  );
+
+  // ...
+}
+
+```
+
+## Installation
 
 First, run the development server:
 
