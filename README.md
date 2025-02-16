@@ -2,11 +2,9 @@
 
 ## About the project
 
-<a href="https://simple-ecommerce-crud.vercel.app">
-  <div style="text-align: center;">
-    <img src="./docs/presentation.gif" alt="Presentation" style="width: 800px;">
-  </div>
-</a>
+<div style="text-align: center;">
+  <img src="./docs/presentation.gif" alt="Presentation" style="width: 800px;">
+</div>
 
 This project is a [**Simple E-Commerce Application**](https://simple-ecommerce-crud.vercel.app) that includes essential features such as a shopping cart and CRUD (Create, Read, Update, Delete) operations for managing products. Users can browse through a list of products, add items to their cart, and proceed to checkout. The application also allows administrators to manage the product inventory efficiently.
 
